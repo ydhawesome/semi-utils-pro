@@ -24,6 +24,7 @@
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.css" crossorigin="anonymous">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/piexifjs@1.0.6/piexif.min.js" crossorigin="anonymous"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js" crossorigin="anonymous"></script>
 
     <style>
@@ -127,8 +128,8 @@
                 <svg class="w-12 h-12 mx-auto mb-3 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
                 </svg>
-                <p class="text-slate-600 font-medium" x-text="uploading ? '上传中…' : '点击选择，或将照片拖到这里'"></p>
-                <p class="text-xs text-slate-400 mt-1">支持 JPG / PNG / HEIC</p>
+                <p class="text-slate-600 font-medium" x-text="uploading ? '处理中…' : '点击选择，或将照片拖到这里'"></p>
+                <p class="text-xs text-slate-400 mt-1">支持 JPG / PNG / HEIC（大图会自动压缩，保留拍摄参数）</p>
             </div>
 
             <!-- 缩略图网格 -->
@@ -226,7 +227,7 @@
         </section>
 
         <p class="text-center text-xs text-slate-400 pt-2">
-            照片仅用于本次处理，处理完即可下载。云端版建议单次上传不超过约 4MB / 张。
+            照片仅用于本次处理，处理完即可下载。超过 4MB 的大图会在本地自动压缩后再上传（拍摄参数保留）。
         </p>
     </div>
     </template>
@@ -243,6 +244,95 @@
         '文件夹名+右下角参数':  { img: 'normal2',    name: '文件夹+时间', desc: '文件夹名称 + 拍摄时间' },
         'logo居中':           { img: 'center_logo',name: 'Logo 居中',  desc: '中心 Logo，四周自定义文字' },
     };
+
+    // ===== 上传前压缩（保留 EXIF）=====
+    // Vercel serverless 请求体上限约 4.5MB，超过会在边缘被拒（表现为 Failed to fetch）。
+    // 这里在浏览器内把大图压到 4MB 以下，并用 piexifjs 把原图 EXIF 转移到压缩图，
+    // 保证水印所需的相机参数（型号/光圈/快门/ISO）不丢失。
+    const MAX_UPLOAD = 4 * 1024 * 1024;
+
+    function fileToDataURL(file) {
+        return new Promise((resolve, reject) => {
+            const r = new FileReader();
+            r.onload = () => resolve(r.result);
+            r.onerror = reject;
+            r.readAsDataURL(file);
+        });
+    }
+
+    function loadImage(src) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => resolve(img);
+            img.onerror = reject;
+            img.src = src;
+        });
+    }
+
+    function dataURLtoBlob(dataUrl) {
+        const [head, b64] = dataUrl.split(',');
+        const mime = head.match(/:(.*?);/)[1];
+        const bin = atob(b64);
+        const arr = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+        return new Blob([arr], { type: mime });
+    }
+
+    async function prepareForUpload(file) {
+        // 已经够小，原样上传（完整保留画质与 EXIF）
+        if (file.size <= MAX_UPLOAD) return file;
+
+        const isJpeg = /jpe?g/i.test(file.type) || /\.jpe?g$/i.test(file.name);
+        const isHeic = /hei[cf]/i.test(file.type) || /\.hei[cf]$/i.test(file.name);
+
+        // 读取原图 EXIF（仅 JPEG 可读）
+        let exifStr = '';
+        let srcDataUrl;
+        try {
+            srcDataUrl = await fileToDataURL(file);
+            if (isJpeg && window.piexif) {
+                try { exifStr = piexif.dump(piexif.load(srcDataUrl)); } catch (e) { exifStr = ''; }
+            }
+        } catch (e) {
+            throw new Error('读取文件失败');
+        }
+
+        // 浏览器通常无法把 HEIC 画到 canvas；过大的 HEIC 只能提示
+        let img;
+        try {
+            img = await loadImage(srcDataUrl);
+        } catch (e) {
+            if (isHeic) throw new Error('HEIC 照片过大且无法在浏览器压缩，请改用本地版或先转成 JPG');
+            throw new Error('无法解码图片');
+        }
+
+        const maxEdge = 4096;
+        let baseScale = Math.max(img.width, img.height) > maxEdge ? maxEdge / Math.max(img.width, img.height) : 1;
+        const qualities = [0.85, 0.78, 0.7, 0.6];
+        let best = null;
+
+        for (let pass = 0; pass < 4; pass++) {
+            const scale = baseScale * Math.pow(0.75, pass);
+            const cw = Math.max(1, Math.round(img.width * scale));
+            const ch = Math.max(1, Math.round(img.height * scale));
+            const canvas = document.createElement('canvas');
+            canvas.width = cw; canvas.height = ch;
+            canvas.getContext('2d').drawImage(img, 0, 0, cw, ch);
+            for (const q of qualities) {
+                let dataUrl = canvas.toDataURL('image/jpeg', q);
+                if (exifStr) { try { dataUrl = piexif.insert(exifStr, dataUrl); } catch (e) {} }
+                const blob = dataURLtoBlob(dataUrl);
+                if (!best || blob.size < best.size) best = blob;
+                if (blob.size <= MAX_UPLOAD) {
+                    const name = file.name.replace(/\.(png|heic|heif)$/i, '.jpg');
+                    return new File([blob], name, { type: 'image/jpeg' });
+                }
+            }
+        }
+        // 实在压不下去也用最小的那张
+        const name = file.name.replace(/\.(png|heic|heif)$/i, '.jpg');
+        return new File([best], name, { type: 'image/jpeg' });
+    }
 
     function app() {
         return {
@@ -310,12 +400,27 @@
 
             async uploadFiles(fileList) {
                 if (!fileList || !fileList.length) return;
-                const formData = new FormData();
-                if (this.sessionId) formData.append('session_id', this.sessionId);
-                for (const f of fileList) formData.append('files', f);
-
                 this.uploading = true;
                 try {
+                    // 大图先在浏览器内压缩（保留 EXIF），避免超过 Vercel 4.5MB 上限
+                    const prepared = [];
+                    let compressed = 0;
+                    for (const f of Array.from(fileList)) {
+                        try {
+                            const out = await prepareForUpload(f);
+                            if (out !== f) compressed++;
+                            prepared.push(out);
+                        } catch (e) {
+                            this.toast(`${f.name}: ${e.message}`, 'error');
+                        }
+                    }
+                    if (!prepared.length) return;
+                    if (compressed) this.toast(`已自动压缩 ${compressed} 张大图`, 'info');
+
+                    const formData = new FormData();
+                    if (this.sessionId) formData.append('session_id', this.sessionId);
+                    for (const f of prepared) formData.append('files', f);
+
                     const res = await fetch('/api/v1/upload', { method: 'POST', body: formData });
                     if (!res.ok) throw new Error(`上传失败 ${res.status}`);
                     const data = await res.json();
