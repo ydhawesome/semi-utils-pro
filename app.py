@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+import tempfile
 import threading
 import uuid
 import webbrowser
@@ -19,6 +20,15 @@ from core.util import (list_files, log_rt, get_exif, convert_heic_to_jpeg, get_t
 from processor.core import start_process
 
 IS_VERCEL = os.environ.get('VERCEL') == '1'
+
+# 会话文件根目录（跨平台：Linux/Vercel 为 /tmp，Windows 为用户临时目录）
+SESSION_ROOT = Path(tempfile.gettempdir())
+
+
+def get_session_dir(session_id: str) -> Path:
+    """返回某个会话的根目录（其下含 input/ 与 output/）"""
+    return SESSION_ROOT / f'semi_utils_{session_id}'
+
 
 config = load_config()
 project_info = load_project_info()
@@ -95,19 +105,28 @@ def upload_files():
         return jsonify({'error': 'No files provided'}), 400
 
     session_id = request.form.get('session_id') or str(uuid.uuid4())
-    session_dir = Path('/tmp') / f'semi_utils_{session_id}' / 'input'
+    session_dir = get_session_dir(session_id) / 'input'
     session_dir.mkdir(parents=True, exist_ok=True)
 
     file_list = []
-    for f in files:
+    for i, f in enumerate(files):
         if not f.filename:
             continue
-        filename = secure_filename(f.filename)
-        if not filename:
-            continue
-        save_path = session_dir / filename
+        # 保留原始文件名用于展示；中文名经 secure_filename 会被清空，做回退
+        original = f.filename
+        safe = secure_filename(original)
+        if not safe or safe.startswith('.'):
+            ext = os.path.splitext(original)[1] or '.jpg'
+            safe = f'image_{i}{ext}'
+        # 避免同名覆盖
+        save_path = session_dir / safe
+        stem, ext = os.path.splitext(safe)
+        n = 1
+        while save_path.exists():
+            save_path = session_dir / f'{stem}_{n}{ext}'
+            n += 1
         f.save(str(save_path))
-        file_list.append({'label': filename, 'value': str(save_path), 'is_file': True})
+        file_list.append({'label': original, 'value': str(save_path), 'is_file': True})
 
     return jsonify({'session_id': session_id, 'files': file_list})
 
@@ -116,12 +135,35 @@ def upload_files():
 def download_file_api():
     file_path = request.args.get('path', '')
     abs_path = os.path.abspath(file_path)
-    tmp_root = os.path.abspath('/tmp')
+    tmp_root = os.path.abspath(str(SESSION_ROOT))
     if not abs_path.startswith(tmp_root + os.sep) and not abs_path.startswith(tmp_root + '/'):
         return jsonify({'error': 'Access denied'}), 403
     if not os.path.isfile(abs_path):
         return jsonify({'error': 'File not found'}), 404
     return send_file(abs_path, as_attachment=True, download_name=os.path.basename(abs_path))
+
+
+@api.route('/api/v1/download_zip', methods=['GET'])
+def download_zip_api():
+    """将某个会话的所有输出文件打包成 zip 下载"""
+    import io
+    import zipfile
+
+    session_id = request.args.get('session_id', '')
+    if not session_id:
+        return jsonify({'error': 'Missing session_id'}), 400
+    output_dir = get_session_dir(session_id) / 'output'
+    if not output_dir.exists():
+        return jsonify({'error': 'No output files'}), 404
+
+    mem = io.BytesIO()
+    with zipfile.ZipFile(mem, 'w', zipfile.ZIP_DEFLATED) as zf:
+        for p in output_dir.rglob('*'):
+            if p.is_file():
+                zf.write(str(p), str(p.relative_to(output_dir)))
+    mem.seek(0)
+    return send_file(mem, mimetype='application/zip', as_attachment=True,
+                     download_name='semi-utils-result.zip')
 
 
 @api.route('/api/v1/file/tree', methods=['GET'])
@@ -133,7 +175,7 @@ def list_input_files():
 
     session_id = request.args.get('session_id')
     if session_id:
-        session_base = Path('/tmp') / f'semi_utils_{session_id}'
+        session_base = get_session_dir(session_id)
         input_dir = session_base / 'input'
         output_dir = session_base / 'output'
         input_children = list_files(str(input_dir), suffixes) if input_dir.exists() else []
@@ -232,7 +274,7 @@ def handle_process():
     input_files = data['selectedItems']
 
     if session_id:
-        session_base = Path('/tmp') / f'semi_utils_{session_id}'
+        session_base = get_session_dir(session_id)
         input_folder = str(session_base / 'input')
         output_folder = str(session_base / 'output')
     else:

@@ -12,1322 +12,431 @@
                 extend: {
                     colors: {
                         primary: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            200: '#bae6fd',
-                            300: '#7dd3fc',
-                            400: '#38bdf8',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            800: '#075985',
-                            900: '#0c4a6e',
-                        },
-                        danger: {
-                            50: '#fef2f2',
-                            100: '#fee2e2',
-                            200: '#fecaca',
-                            300: '#fca5a5',
-                            400: '#f87171',
-                            500: '#ef4444',
-                            600: '#dc2626',
-                            700: '#b91c1c',
-                            800: '#991b1b',
-                            900: '#7f1d1d',
+                            50: '#f0f9ff', 100: '#e0f2fe', 200: '#bae6fd', 300: '#7dd3fc',
+                            400: '#38bdf8', 500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1',
+                            800: '#075985', 900: '#0c4a6e',
                         }
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.3s ease-out',
-                        'slide-up': 'slideUp 0.3s ease-out',
-                        'spin-slow': 'spin 1s linear infinite',
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
-                        },
-                        slideUp: {
-                            '0%': { transform: 'translateY(10px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' },
-                        },
-                    },
+                    }
                 }
             }
         }
     </script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.24.1/ace.js" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.24.1/mode-json.js" crossorigin="anonymous"></script>
-
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.css" crossorigin="anonymous">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0" crossorigin="anonymous"></script>
-
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js" crossorigin="anonymous"></script>
 
     <style>
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
-
-        .ace_editor {
-            border: 1px solid #e5e7eb;
-            border-radius: 0.5rem;
-        }
-
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 3px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-        }
-
-        .tree-node {
-            transition: all 0.15s ease;
-        }
-
-        .tree-node:hover {
-            background: linear-gradient(90deg, #f0f9ff 0%, #e0f2fe 100%);
-        }
-
-        .config-label {
-            @apply text-xs font-semibold text-slate-600 uppercase tracking-wide;
-        }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        [x-cloak] { display: none !important; }
+        .step-num { width: 28px; height: 28px; }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 to-slate-100 h-screen w-full flex flex-col overflow-hidden text-sm"
-      x-data="app()" x-init="init()">
+<body class="bg-gradient-to-b from-slate-50 to-slate-100 min-h-screen text-slate-800"
+      x-data="app()" x-init="init()" x-cloak>
 
-<!-- 顶部导航 -->
-<header class="glass-effect border-b border-slate-200/50 h-16 flex items-center px-6 shadow-sm shrink-0 z-20">
-    <div class="flex items-center gap-3">
-        <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-primary-500/30">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
+<!-- 顶部 -->
+<header class="sticky top-0 z-20 backdrop-blur bg-white/80 border-b border-slate-200/60">
+    <div class="max-w-4xl mx-auto px-5 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary-500/30">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+            </div>
+            <div>
+                <h1 class="font-bold text-lg tracking-tight">{{ title }}</h1>
+                <p class="text-xs text-slate-400">给照片一键添加精美水印</p>
+            </div>
         </div>
-        <div>
-            <h1 class="font-bold text-lg text-slate-800 tracking-tight">{{ title }}</h1>
-            <p class="text-xs text-slate-400">v{{version}}</p>
-        </div>
+        <span class="text-xs px-2.5 py-1 rounded-full font-medium bg-slate-100 text-slate-500"
+              x-text="cloudMode ? '云端版' : '本地版'"></span>
     </div>
 </header>
 
-<!-- 主布局 -->
-<main class="flex-1 p-5 overflow-hidden">
-    <div class="grid grid-cols-12 gap-5 h-full">
+<main class="max-w-4xl mx-auto px-5 py-8 space-y-6">
 
-        <!-- Col 1: 配置管理 -->
-        <div class="col-span-12 lg:col-span-3 flex flex-col h-full bg-white/80 backdrop-blur rounded-2xl shadow-lg shadow-slate-200/50 border border-slate-200/50 overflow-hidden animate-fade-in">
-            <div class="px-5 py-4 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-white flex justify-between items-center">
-                <div class="flex items-center gap-2">
-                    <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    <h3 class="font-bold text-slate-700">配置管理</h3>
+    <!-- ============ 结果页 ============ -->
+    <template x-if="view === 'done'">
+        <div class="space-y-6 animate-[fadeIn_.3s_ease-out]">
+            <div class="text-center py-4">
+                <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-emerald-100 flex items-center justify-center">
+                    <svg class="w-9 h-9 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                 </div>
-                <span class="text-xs px-2.5 py-1 rounded-full font-medium transition-all duration-200"
-                      :class="isStatic ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'"
-                      x-text="isStatic ? '已保存' : '编辑中'"></span>
+                <h2 class="text-xl font-bold">处理完成！</h2>
+                <p class="text-sm text-slate-500 mt-1" x-text="`成功 ${progress.success} 张，跳过 ${progress.skipped} 张，失败 ${progress.failure} 张`"></p>
             </div>
 
-            <div class="p-5 flex-1 overflow-y-auto space-y-4">
-                <!-- 本地模式：文件夹配置 -->
-                <template x-if="!cloudMode">
-                    <div class="space-y-4">
-                        <div class="space-y-1">
-                            <label class="block config-label">输入文件夹</label>
-                            <div class="relative">
-                                <input type="text" x-model="config.input_folder" :disabled="isStatic"
-                                       class="w-full h-10 pl-10 pr-4 rounded-xl border border-slate-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all disabled:bg-slate-50 disabled:text-slate-400 text-sm">
-                                <svg class="w-5 h-5 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-                                </svg>
-                            </div>
+            <div class="flex flex-wrap justify-center gap-3">
+                <button @click="downloadZip()"
+                        class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-xl font-semibold shadow-lg shadow-emerald-500/30 transition flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    打包下载全部 (ZIP)
+                </button>
+                <button @click="reset()"
+                        class="px-6 py-3 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl font-semibold transition flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    再做一批
+                </button>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <template x-for="(r, i) in results" :key="r.value">
+                    <div class="group relative rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
+                        <div class="aspect-square bg-slate-100 flex items-center justify-center overflow-hidden">
+                            <img :src="thumbUrl(r.value)" loading="lazy" class="w-full h-full object-cover">
                         </div>
-                        <div class="space-y-1">
-                            <label class="block config-label">输出文件夹</label>
-                            <div class="relative">
-                                <input type="text" x-model="config.output_folder" :disabled="isStatic"
-                                       class="w-full h-10 pl-10 pr-4 rounded-xl border border-slate-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all disabled:bg-slate-50 disabled:text-slate-400 text-sm">
-                                <svg class="w-5 h-5 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-                                </svg>
-                            </div>
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition flex items-center justify-center opacity-0 group-hover:opacity-100">
+                            <button @click="downloadOne(r.value)"
+                                    class="px-4 py-2 bg-white/95 text-slate-800 rounded-lg text-sm font-medium shadow flex items-center gap-1.5">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                下载
+                            </button>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <label for="override_existed" class="config-label cursor-pointer transition-colors duration-200"
-                                   :class="config.override_existed ? 'text-red-600 font-medium' : ''">覆盖已存在</label>
-                            <input type="checkbox" x-model="config.override_existed" :disabled="isStatic" id="override_existed"
-                                   class="w-4 h-4 rounded border-slate-300 focus:ring-2 disabled:opacity-50 cursor-pointer transition-all duration-200"
-                                   :class="config.override_existed ? 'accent-red-600' : 'accent-primary-500'">
-                        </div>
+                        <div class="px-2 py-1.5 text-xs text-slate-500 truncate" x-text="r.label"></div>
                     </div>
                 </template>
+            </div>
+        </div>
+    </template>
 
-                <div class="space-y-1">
-                    <label class="config-label">输出质量: <span x-text="config.quality" class="text-primary-600 font-bold"></span>%</label>
-                    <div class="flex items-center gap-3">
-                        <input type="range" x-model="config.quality" :disabled="isStatic"
-                               min="60" max="100" step="1"
-                               class="flex-1 h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-primary-500 disabled:opacity-50">
-                        <input type="number" x-model="config.quality" :disabled="isStatic"
-                               min="60" max="100" step="1"
-                               class="w-16 h-10 px-3 text-center rounded-xl border border-slate-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all disabled:bg-slate-50">
-                    </div>
-                </div>
+    <!-- ============ 编辑页 ============ -->
+    <template x-if="view === 'edit'">
+    <div class="space-y-6">
 
-                <div class="flex-1 flex flex-col min-h-[300px]">
-                    <div class="flex items-center justify-between mb-2">
-                        <label class="config-label">模板配置</label>
-                        <div class="flex items-center gap-2">
-                            <label class="text-xs text-slate-500">选择模板:</label>
-                            <select x-model="config.template_name"
-                                    @change="switchTemplate($event.target.value)"
-                                    :disabled="isStatic"
-                                    class="h-8 px-2 text-xs rounded-lg border border-slate-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all disabled:bg-slate-50 disabled:opacity-50">
-                                <template x-for="template in availableTemplates" :key="template">
-                                    <option :value="template" x-text="template"></option>
-                                </template>
-                            </select>
-                            <button @click="createNewTemplate()"
-                                    :disabled="isStatic"
-                                    title="新建空白模板"
-                                    class="h-8 px-2 text-xs rounded-lg border border-slate-200 hover:bg-emerald-50 hover:border-emerald-300 hover:text-emerald-600 text-slate-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                </svg>
-                                新建
-                            </button>
-                            <button @click="saveAsTemplate()"
-                                    title="另存为新模板"
-                                    class="h-8 px-2 text-xs rounded-lg border border-slate-200 hover:bg-primary-50 hover:border-primary-300 hover:text-primary-600 text-slate-500 transition-all flex items-center gap-1">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-                                </svg>
-                                另存为
-                            </button>
-                        </div>
-                    </div>
-                    <div id="json-editor" class="w-full flex-1 min-h-[300px] rounded-xl"></div>
-                </div>
+        <!-- 步骤 1：上传 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200/60 p-6">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="step-num rounded-full bg-primary-500 text-white flex items-center justify-center font-bold text-sm shrink-0">1</span>
+                <h2 class="font-bold text-lg">上传照片</h2>
+                <span x-show="photos.length" class="text-sm text-slate-400" x-text="`已选 ${photos.length} 张`"></span>
             </div>
 
-            <div class="p-4 border-t border-slate-100 bg-gradient-to-r from-slate-50 to-white">
-                <template x-if="isStatic">
-                    <button @click="enableEdit()"
-                            class="w-full py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-xl font-medium shadow-lg shadow-primary-500/30 transition-all duration-200 flex items-center justify-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                        </svg>
-                        编辑配置
+            <div @dragover.prevent="isDragging = true"
+                 @dragleave.prevent="isDragging = false"
+                 @drop.prevent="isDragging = false; uploadFiles($event.dataTransfer.files)"
+                 :class="isDragging ? 'border-primary-400 bg-primary-50' : 'border-slate-300 hover:border-primary-300 hover:bg-slate-50'"
+                 class="border-2 border-dashed rounded-xl py-10 px-4 text-center cursor-pointer transition"
+                 @click="$refs.fileInput.click()">
+                <input x-ref="fileInput" type="file" class="hidden" multiple
+                       accept="image/jpeg,image/png,image/heic,image/heif,.heic,.heif,.jpg,.jpeg,.png"
+                       @change="uploadFiles($event.target.files); $event.target.value=''">
+                <svg class="w-12 h-12 mx-auto mb-3 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                </svg>
+                <p class="text-slate-600 font-medium" x-text="uploading ? '上传中…' : '点击选择，或将照片拖到这里'"></p>
+                <p class="text-xs text-slate-400 mt-1">支持 JPG / PNG / HEIC</p>
+            </div>
+
+            <!-- 缩略图网格 -->
+            <div x-show="photos.length" class="grid grid-cols-3 sm:grid-cols-5 gap-3 mt-4">
+                <template x-for="(p, i) in photos" :key="p.value">
+                    <div class="group relative aspect-square rounded-lg overflow-hidden border border-slate-200 bg-slate-100">
+                        <img :src="thumbUrl(p.value)" loading="lazy" class="w-full h-full object-cover">
+                        <button @click="removePhoto(i)"
+                                class="absolute top-1 right-1 w-6 h-6 rounded-full bg-black/60 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition hover:bg-red-500"
+                                title="移除">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+                </template>
+            </div>
+        </section>
+
+        <!-- 步骤 2：选择样式 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200/60 p-6">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="step-num rounded-full bg-primary-500 text-white flex items-center justify-center font-bold text-sm shrink-0">2</span>
+                <h2 class="font-bold text-lg">选择水印样式</h2>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <template x-for="t in templates" :key="t">
+                    <button @click="selectedTemplate = t"
+                            :class="selectedTemplate === t ? 'border-primary-500 ring-2 ring-primary-500/30' : 'border-slate-200 hover:border-primary-300'"
+                            class="text-left rounded-xl border-2 overflow-hidden bg-white transition relative">
+                        <div class="aspect-[4/3] bg-slate-100 flex items-center justify-center overflow-hidden">
+                            <template x-if="styleMeta(t).img">
+                                <img :src="`/static/${styleMeta(t).img}.jpeg`" loading="lazy" class="w-full h-full object-cover">
+                            </template>
+                            <template x-if="!styleMeta(t).img">
+                                <svg class="w-10 h-10 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            </template>
+                        </div>
+                        <div class="absolute top-2 right-2 w-6 h-6 rounded-full bg-primary-500 text-white items-center justify-center shadow"
+                             :class="selectedTemplate === t ? 'flex' : 'hidden'">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                        </div>
+                        <div class="p-3">
+                            <p class="font-semibold text-sm truncate" x-text="styleMeta(t).name || t"></p>
+                            <p class="text-xs text-slate-400 mt-0.5 line-clamp-2" x-text="styleMeta(t).desc || '自定义模板'"></p>
+                        </div>
                     </button>
                 </template>
-                <template x-if="!isStatic">
-                    <div class="flex gap-2">
-                        <button @click="resetConfig()"
-                                class="flex-1 py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-600 rounded-xl font-medium transition-all duration-200">
-                            取消
-                        </button>
-                        <button @click="saveConfig()"
-                                class="flex-1 py-2.5 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-xl font-medium shadow-lg shadow-primary-500/30 transition-all duration-200">
-                            保存配置
-                        </button>
-                    </div>
+            </div>
+        </section>
+
+        <!-- 步骤 3：生成 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200/60 p-6">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="step-num rounded-full bg-primary-500 text-white flex items-center justify-center font-bold text-sm shrink-0">3</span>
+                <h2 class="font-bold text-lg">生成</h2>
+            </div>
+
+            <!-- 画质选择 -->
+            <div class="flex items-center gap-3 mb-5">
+                <span class="text-sm text-slate-500 shrink-0">输出画质</span>
+                <div class="flex gap-2">
+                    <template x-for="opt in qualityOptions" :key="opt.value">
+                        <button @click="quality = opt.value"
+                                :class="quality === opt.value ? 'bg-primary-500 text-white border-primary-500' : 'bg-white text-slate-600 border-slate-200 hover:border-primary-300'"
+                                class="px-4 py-1.5 rounded-lg border text-sm font-medium transition"
+                                x-text="opt.label"></button>
+                    </template>
+                </div>
+            </div>
+
+            <!-- 进度（处理中） -->
+            <div x-show="progress.active" class="mb-5">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm font-medium text-slate-600" x-text="progress.message || '处理中…'"></span>
+                    <span class="text-sm font-bold text-primary-600" x-text="`${progress.percent}%`"></span>
+                </div>
+                <div class="h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-primary-500 to-primary-600 rounded-full transition-all duration-300"
+                         :style="`width: ${progress.percent}%`"></div>
+                </div>
+            </div>
+
+            <button @click="generate()" :disabled="!canStart"
+                    class="w-full py-4 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-xl font-bold text-lg shadow-lg shadow-primary-500/30 transition disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none flex items-center justify-center gap-2">
+                <template x-if="!progress.active">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
                 </template>
-            </div>
-        </div>
-
-        <!-- Col 2: 文件树 -->
-        <div class="col-span-12 lg:col-span-6 flex flex-col h-full bg-white/80 backdrop-blur rounded-2xl shadow-lg shadow-slate-200/50 border border-slate-200/50 overflow-hidden animate-slide-up" style="animation-delay: 0.1s">
-            <div class="px-5 py-4 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-white flex justify-between items-center">
-                <div class="flex items-center gap-2">
-                    <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-                    </svg>
-                    <h3 class="font-bold text-slate-700">文件列表</h3>
-                </div>
-                <button @click="fetchFiles()"
-                        class="p-2 rounded-lg hover:bg-primary-50 text-slate-400 hover:text-primary-600 transition-all duration-200">
-                    <svg class="w-5 h-5" :class="{'animate-spin': loading.files}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
-                </button>
-            </div>
-
-            <div class="flex-1 overflow-hidden p-5 flex flex-col">
-
-                <!-- 云端模式：拖拽上传区 -->
-                <div x-show="cloudMode"
-                     @dragover.prevent="isDragging = true"
-                     @dragleave.prevent="isDragging = false"
-                     @drop.prevent="isDragging = false; uploadFiles($event.dataTransfer.files)"
-                     :class="isDragging ? 'border-primary-400 bg-primary-50' : 'border-slate-200 bg-slate-50 hover:border-primary-300 hover:bg-primary-50/50'"
-                     class="border-2 border-dashed rounded-xl p-4 text-center mb-3 transition-all cursor-pointer shrink-0"
-                     @click="$refs.cloudFileInput.click()">
-                    <input x-ref="cloudFileInput" type="file" class="hidden" multiple accept="image/jpeg,image/png,image/heic,image/heif,.heic,.heif,.jpg,.jpeg,.png" @change="uploadFiles($event.target.files); $event.target.value=''">
-                    <svg class="w-8 h-8 mx-auto mb-1 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
-                    </svg>
-                    <p class="text-xs text-slate-500" x-text="loading.files ? '上传中...' : (inputTreeData[0]?.children?.length ? `已上传 ${inputTreeData[0].children.length} 张，可继续拖入` : '拖拽照片到此处，或点击选择')"></p>
-                </div>
-
-                <!-- 输入树 -->
-                <div class="flex-1 flex flex-col min-h-0 overflow-hidden">
-                    <div class="flex items-center justify-between mb-2 pb-2 border-b border-slate-100 shrink-0">
-                        <div class="flex items-center gap-2">
-                            <span class="config-label">输入文件</span>
-                            <span class="text-xs px-2 py-0.5 bg-primary-100 text-primary-700 rounded-full font-medium"
-                                  x-text="`${selectedItems.length} 已选中`"></span>
-                        </div>
-                        <button @click="selectAll()" class="text-xs text-primary-600 hover:text-primary-700 font-medium">全选</button>
-                    </div>
-
-                    <div class="flex-1 overflow-y-auto pr-2">
-                        <!-- Loading -->
-                        <div x-show="loading.files" class="flex flex-col items-center justify-center py-12 text-slate-400">
-                            <svg class="animate-spin h-8 w-8 text-primary-500 mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                            <span class="text-sm">正在扫描文件系统...</span>
-                        </div>
-
-                        <!-- Empty -->
-                        <div x-show="!loading.files && (!inputTreeData || inputTreeData.length === 0 || !inputTreeData[0]?.children?.length)"
-                             class="text-center py-12">
-                            <svg class="w-16 h-16 mx-auto mb-3 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 12h.01M12 16h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <span class="text-sm text-slate-400" x-text="cloudMode ? '请上传照片' : '未找到文件'"></span>
-                        </div>
-
-                        <!-- Tree -->
-                        <div x-show="!loading.files && inputTreeData && inputTreeData.length > 0" class="space-y-1">
-                            <template x-for="(node, index) in inputTreeData" :key="(node.value || node.label || index) + '-' + treeKey">
-                                <div x-data="treeNode(node, true)" class="tree-item">
-                                    <div class="tree-node flex items-center py-2 px-2 rounded-lg cursor-pointer select-none"
-                                         :style="'padding-left: 8px'"
-                                         @click="handleClick()">
-                                        <input type="checkbox"
-                                               class="mr-2 w-4 h-4 text-primary-600 rounded border-slate-300 focus:ring-2 focus:ring-primary-500/20 cursor-pointer"
-                                               :checked="isChecked"
-                                               @click.stop="toggle()">
-                                        <span class="mr-2 flex items-center justify-center w-3" @click.stop="toggleFolder()" x-show="hasChildren" style="display: none;">
-                                            <svg class="w-3 h-3 transition-transform duration-200" :class="isOpen ? 'rotate-90' : ''" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-                                            </svg>
-                                        </span>
-                                        <span class="mr-2" x-show="hasChildren" x-html="folderIcon"></span>
-                                        <span class="mr-2" x-show="!hasChildren" x-html="fileIcon"></span>
-                                        <span class="flex-1 text-xs font-medium text-slate-700 truncate" x-text="label"></span>
-                                    </div>
-                                    <div class="children" x-show="isOpen && hasChildren">
-                                        <template x-for="(child, childIndex) in node.children" :key="child.value || child.label || childIndex">
-                                            <div x-data="treeNode(child, true)" class="tree-item">
-                                                <div class="tree-node flex items-center py-2 px-2 rounded-lg cursor-pointer select-none"
-                                                     :style="'padding-left: 24px'"
-                                                     @click="handleClick()">
-                                                    <input type="checkbox"
-                                                           class="mr-2 w-4 h-4 text-primary-600 rounded border-slate-300 focus:ring-2 focus:ring-primary-500/20 cursor-pointer"
-                                                           :checked="isChecked"
-                                                           @click.stop="toggle()">
-                                                    <span class="mr-2 flex items-center justify-center w-3" @click.stop="toggleFolder()" x-show="hasChildren" style="display: none;">
-                                                        <svg class="w-3 h-3 transition-transform duration-200" :class="isOpen ? 'rotate-90' : ''" fill="currentColor" viewBox="0 0 20 20">
-                                                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-                                                        </svg>
-                                                    </span>
-                                                    <span class="mr-2" x-show="hasChildren" x-html="folderIcon"></span>
-                                                    <span class="mr-2" x-show="!hasChildren" x-html="fileIcon"></span>
-                                                    <span class="flex-1 text-xs font-medium text-slate-700 truncate" x-text="label"></span>
-                                                </div>
-                                                <div class="children" x-show="isOpen && hasChildren">
-                                                    <template x-for="(grandchild, grandIndex) in child.children" :key="grandchild.value || grandchild.label || grandIndex">
-                                                        <div x-data="treeNode(grandchild, true)" class="tree-item">
-                                                            <div class="tree-node flex items-center py-2 px-2 rounded-lg cursor-pointer select-none"
-                                                                 :style="'padding-left: 40px'"
-                                                                 @click="handleClick()">
-                                                                <input type="checkbox"
-                                                                       class="mr-2 w-4 h-4 text-primary-600 rounded border-slate-300 focus:ring-2 focus:ring-primary-500/20 cursor-pointer"
-                                                                       :checked="isChecked"
-                                                                       @click.stop="toggle()">
-                                                                <span class="mr-2 flex items-center justify-center w-3" @click.stop="toggleFolder()" x-show="hasChildren" style="display: none;">
-                                                                    <svg class="w-3 h-3 transition-transform duration-200" :class="isOpen ? 'rotate-90' : ''" fill="currentColor" viewBox="0 0 20 20">
-                                                                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-                                                                    </svg>
-                                                                </span>
-                                                                <span class="mr-2" x-show="hasChildren" x-html="folderIcon"></span>
-                                                                <span class="mr-2" x-show="!hasChildren" x-html="fileIcon"></span>
-                                                                <span class="flex-1 text-xs font-medium text-slate-700 truncate" x-text="label"></span>
-                                                            </div>
-                                                            <div class="children" x-show="isOpen && hasChildren">
-                                                                <template x-for="(ggchild, ggIndex) in grandchild.children" :key="ggchild.value || ggchild.label || ggIndex">
-                                                                    <div x-data="treeNode(ggchild, true)" class="tree-item">
-                                                                        <div class="tree-node flex items-center py-2 px-2 rounded-lg cursor-pointer select-none"
-                                                                             :style="'padding-left: 56px'"
-                                                                             @click="handleClick()">
-                                                                            <input type="checkbox"
-                                                                                   class="mr-2 w-4 h-4 text-primary-600 rounded border-slate-300 focus:ring-2 focus:ring-primary-500/20 cursor-pointer"
-                                                                                   :checked="isChecked"
-                                                                                   @click.stop="toggle()">
-                                                                            <span class="mr-2 flex items-center justify-center w-3" @click.stop="toggleFolder()" x-show="hasChildren" style="display: none;">
-                                                                                <svg class="w-3 h-3 transition-transform duration-200" :class="isOpen ? 'rotate-90' : ''" fill="currentColor" viewBox="0 0 20 20">
-                                                                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-                                                                                </svg>
-                                                                            </span>
-                                                                            <span class="mr-2" x-show="hasChildren" x-html="folderIcon"></span>
-                                                                            <span class="mr-2" x-show="!hasChildren" x-html="fileIcon"></span>
-                                                                            <span class="flex-1 text-xs font-medium text-slate-700 truncate" x-text="label"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                </template>
-                                                            </div>
-                                                        </div>
-                                                    </template>
-                                                </div>
-                                            </div>
-                                        </template>
-                                    </div>
-                                </div>
-                            </template>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 输出树 -->
-                <div class="flex-1 flex flex-col min-h-0 overflow-hidden mt-4">
-                    <div class="flex items-center gap-2 mb-2 pb-2 border-b border-slate-100 shrink-0">
-                        <span class="config-label">输出文件</span>
-                    </div>
-                    <div class="flex-1 overflow-y-auto pr-2">
-                        <div x-show="!loading.files && outputTreeData && outputTreeData.length > 0" class="space-y-1">
-                            <template x-for="(node, index) in outputTreeData" :key="(node.value || node.label || index) + '-' + treeKey">
-                                <div x-data="treeNode(node, false)" class="tree-item">
-                                    <div class="tree-node flex items-center py-2 px-2 rounded-lg cursor-pointer select-none"
-                                         :style="'padding-left: 8px'"
-                                         @click="handleClick()">
-                                        <span class="mr-2 flex items-center justify-center w-3" @click.stop="toggleFolder()" x-show="hasChildren" style="display: none;">
-                                            <svg class="w-3 h-3 transition-transform duration-200" :class="isOpen ? 'rotate-90' : ''" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-                                            </svg>
-                                        </span>
-                                        <span class="mr-2" x-show="hasChildren" x-html="folderIcon"></span>
-                                        <span class="mr-2" x-show="!hasChildren" x-html="fileIcon"></span>
-                                        <span class="flex-1 text-xs font-medium text-slate-700 truncate" x-text="label"></span>
-                                        <button x-show="isFile && Alpine.store('app')?.cloudMode"
-                                                @click.stop="Alpine.store('app').downloadFile(value)"
-                                                title="下载" class="ml-1 p-1 rounded hover:bg-emerald-50 text-slate-400 hover:text-emerald-600 transition-colors">
-                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                                        </button>
-                                    </div>
-                                    <div class="children" x-show="isOpen && hasChildren">
-                                        <template x-for="(child, childIndex) in node.children" :key="child.value || child.label || childIndex">
-                                            <div x-data="treeNode(child, false)" class="tree-item">
-                                                <div class="tree-node flex items-center py-2 px-2 rounded-lg cursor-pointer select-none"
-                                                     :style="'padding-left: 24px'"
-                                                     @click="handleClick()">
-                                                    <span class="mr-2 flex items-center justify-center w-3" @click.stop="toggleFolder()" x-show="hasChildren" style="display: none;">
-                                                        <svg class="w-3 h-3 transition-transform duration-200" :class="isOpen ? 'rotate-90' : ''" fill="currentColor" viewBox="0 0 20 20">
-                                                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-                                                        </svg>
-                                                    </span>
-                                                    <span class="mr-2" x-show="hasChildren" x-html="folderIcon"></span>
-                                                    <span class="mr-2" x-show="!hasChildren" x-html="fileIcon"></span>
-                                                    <span class="flex-1 text-xs font-medium text-slate-700 truncate" x-text="label"></span>
-                                                    <button x-show="isFile && Alpine.store('app')?.cloudMode"
-                                                            @click.stop="Alpine.store('app').downloadFile(value)"
-                                                            title="下载" class="ml-1 p-1 rounded hover:bg-emerald-50 text-slate-400 hover:text-emerald-600 transition-colors">
-                                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                                                    </button>
-                                                </div>
-                                                <div class="children" x-show="isOpen && hasChildren">
-                                                    <template x-for="(grandchild, grandIndex) in child.children" :key="grandchild.value || grandchild.label || grandIndex">
-                                                        <div x-data="treeNode(grandchild, false)" class="tree-item">
-                                                            <div class="tree-node flex items-center py-2 px-2 rounded-lg cursor-pointer select-none"
-                                                                 :style="'padding-left: 40px'"
-                                                                 @click="handleClick()">
-                                                                <span class="mr-2 flex items-center justify-center w-3" @click.stop="toggleFolder()" x-show="hasChildren" style="display: none;">
-                                                                    <svg class="w-3 h-3 transition-transform duration-200" :class="isOpen ? 'rotate-90' : ''" fill="currentColor" viewBox="0 0 20 20">
-                                                                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-                                                                    </svg>
-                                                                </span>
-                                                                <span class="mr-2" x-show="hasChildren" x-html="folderIcon"></span>
-                                                                <span class="mr-2" x-show="!hasChildren" x-html="fileIcon"></span>
-                                                                <span class="flex-1 text-xs font-medium text-slate-700 truncate" x-text="label"></span>
-                                                            </div>
-                                                            <div class="children" x-show="isOpen && hasChildren">
-                                                                <template x-for="(ggchild, ggIndex) in grandchild.children" :key="ggchild.value || ggchild.label || ggIndex">
-                                                                    <div x-data="treeNode(ggchild, false)" class="tree-item">
-                                                                        <div class="tree-node flex items-center py-2 px-2 rounded-lg cursor-pointer select-none"
-                                                                             :style="'padding-left: 56px'"
-                                                                             @click="handleClick()">
-                                                                            <span class="mr-2 flex items-center justify-center w-3" @click.stop="toggleFolder()" x-show="hasChildren" style="display: none;">
-                                                                                <svg class="w-3 h-3 transition-transform duration-200" :class="isOpen ? 'rotate-90' : ''" fill="currentColor" viewBox="0 0 20 20">
-                                                                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-                                                                                </svg>
-                                                                            </span>
-                                                                            <span class="mr-2" x-show="hasChildren" x-html="folderIcon"></span>
-                                                                            <span class="mr-2" x-show="!hasChildren" x-html="fileIcon"></span>
-                                                                            <span class="flex-1 text-xs font-medium text-slate-700 truncate" x-text="label"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                </template>
-                                                            </div>
-                                                        </div>
-                                                    </template>
-                                                </div>
-                                            </div>
-                                        </template>
-                                    </div>
-                                </div>
-                            </template>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Col 3: 预览与执行 -->
-        <div class="col-span-12 lg:col-span-3 flex flex-col h-full gap-5">
-
-            <!-- 预览卡片 -->
-            <div class="flex-1 bg-white/80 backdrop-blur rounded-2xl shadow-lg shadow-slate-200/50 border border-slate-200/50 flex flex-col overflow-hidden animate-slide-up" style="animation-delay: 0.2s">
-                <div class="px-5 py-4 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-white">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                        <h3 class="font-bold text-slate-700">图片预览</h3>
-                    </div>
-                </div>
-
-                <div class="flex-1 bg-gradient-to-br from-slate-50 to-slate-100/50 flex items-center justify-center p-4 relative overflow-hidden">
-                    <!-- Empty -->
-                    <div x-show="!preview.url || !preview.isFile" class="text-center">
-                        <div class="w-20 h-20 mx-auto mb-3 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
-                            <svg class="w-10 h-10 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                        </div>
-                        <span class="text-xs text-slate-400">点击文件预览</span>
-                    </div>
-
-                    <!-- Image -->
-                    <div x-show="preview.url && preview.isFile"
-                         class="w-full h-full flex flex-col"
-                         x-transition:enter="transition ease-out duration-300"
-                         x-transition:enter-start="opacity-0 transform scale-95"
-                         x-transition:enter-end="opacity-100 transform scale-100">
-                        <div class="text-xs text-center text-slate-500 mb-2 font-mono truncate bg-white/90 backdrop-blur py-1.5 px-3 rounded-xl border border-slate-200 shadow-sm"
-                             x-text="preview.name"></div>
-                        <div class="flex-1 relative rounded-xl border border-slate-200 bg-white shadow-lg overflow-hidden">
-                            <img x-effect="if(preview.isFile) $el.src = preview.url"
-                                 class="absolute inset-0 w-full h-full object-contain p-2">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 操作卡片 -->
-            <div class="bg-white/80 backdrop-blur rounded-2xl shadow-lg shadow-slate-200/50 border border-slate-200/50 p-5 shrink-0 relative overflow-hidden animate-slide-up" style="animation-delay: 0.3s">
-
-                <!-- 进度条覆盖层 -->
-                <div x-show="progress.active"
-                     x-transition:enter="transition ease-out duration-200"
-                     x-transition:enter-start="opacity-0"
-                     x-transition:enter-end="opacity-100"
-                     class="absolute inset-0 z-10 flex flex-col justify-center bg-white/95 backdrop-blur-sm rounded-2xl p-5">
-
-                    <!-- 进度条 -->
-                    <div class="mb-4">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-xs font-semibold text-slate-600" x-text="progress.message || '处理中...'"></span>
-                            <span class="text-xs font-bold text-primary-600" x-text="`${progress.percent}%`"></span>
-                        </div>
-                        <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-gradient-to-r from-primary-500 to-primary-600 rounded-full transition-all duration-300 ease-out"
-                                 :class="{'animate-pulse': progress.active}"
-                                 :style="`width: ${progress.percent}%`"></div>
-                        </div>
-                    </div>
-
-                    <!-- 当前文件 -->
-                    <div x-show="progress.current" class="mb-3 text-center">
-                        <span class="text-xs text-slate-500">正在处理: </span>
-                        <span class="text-xs font-medium text-slate-700 truncate max-w-[200px]" x-text="progress.current"></span>
-                    </div>
-
-                    <!-- 统计信息 -->
-                    <div class="flex justify-center gap-4 text-center">
-                        <div class="flex flex-col">
-                            <span class="text-lg font-bold text-slate-800" x-text="progress.total">0</span>
-                            <span class="text-[10px] text-slate-400 uppercase">总数</span>
-                        </div>
-                        <div class="w-px bg-slate-200"></div>
-                        <div class="flex flex-col">
-                            <span class="text-lg font-bold text-emerald-600" x-text="progress.success">0</span>
-                            <span class="text-[10px] text-slate-400 uppercase">成功</span>
-                        </div>
-                        <div class="w-px bg-slate-200"></div>
-                        <div class="flex flex-col">
-                            <span class="text-lg font-bold text-amber-500" x-text="progress.skipped">0</span>
-                            <span class="text-[10px] text-slate-400 uppercase">跳过</span>
-                        </div>
-                        <div class="w-px bg-slate-200"></div>
-                        <div class="flex flex-col">
-                            <span class="text-lg font-bold text-danger-600" x-text="progress.failure">0</span>
-                            <span class="text-[10px] text-slate-400 uppercase">失败</span>
-                        </div>
-                    </div>
-
-                    <!-- 完成状态 -->
-                    <div x-show="progress.complete" x-transition
-                         class="mt-4 p-3 rounded-xl text-center"
-                         :class="{
-                             'bg-emerald-50 text-emerald-700': progress.failure === 0,
-                             'bg-amber-50 text-amber-700': progress.failure > 0 && progress.success > 0,
-                             'bg-danger-50 text-danger-700': progress.success === 0
-                         }">
-                        <span class="text-sm font-medium" x-text="progress.message"></span>
-                    </div>
-                </div>
-
-                <div class="flex justify-between items-end mb-4">
-                    <div>
-                        <div class="flex items-baseline gap-1">
-                            <span class="text-3xl font-bold text-slate-800" x-text="selectedItems.length">0</span>
-                            <span class="text-sm text-slate-400">/ 待处理</span>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <span class="text-xs px-3 py-1.5 rounded-xl font-medium transition-all duration-200"
-                              :class="isValidConfig ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'"
-                              x-text="isValidConfig ? '配置有效' : '需保存配置'"></span>
-                    </div>
-                </div>
-
-                <button @click="startProcess()"
-                        :disabled="!canStart"
-                        class="w-full py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-xl font-bold shadow-lg shadow-emerald-500/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    开始执行
-                </button>
-                <p class="mt-2 text-center text-xs text-slate-400" x-show="!canStart" x-text="cloudMode ? '请上传照片并选择' : '请保存配置并选择文件'"></p>
-            </div>
-        </div>
-    </div>
-</main>
-
-<!-- 模板名称输入模态框 -->
-<div x-show="modal && modal.show"
-     x-transition:enter="transition ease-out duration-200"
-     x-transition:enter-start="opacity-0"
-     x-transition:enter-end="opacity-100"
-     x-transition:leave="transition ease-in duration-150"
-     x-transition:leave-start="opacity-100"
-     x-transition:leave-end="opacity-0"
-     class="fixed inset-0 z-50 flex items-center justify-center"
-     style="display: none;">
-    <template x-if="modal">
-        <div class="relative w-full max-w-md mx-4">
-            <!-- 背景遮罩 -->
-            <div x-show="modal.show"
-         x-transition:enter="transition ease-out duration-200"
-         x-transition:enter-start="opacity-0"
-         x-transition:enter-end="opacity-100"
-         x-transition:leave="transition ease-in duration-150"
-         x-transition:leave-start="opacity-100"
-         x-transition:leave-end="opacity-0"
-         @click="modal.show = false"
-         class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
-
-    <!-- 模态框内容 -->
-    <div x-show="modal.show"
-         x-transition:enter="transition ease-out duration-200"
-         x-transition:enter-start="opacity-0 scale-95 translate-y-4"
-         x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-         x-transition:leave="transition ease-in duration-150"
-         x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-         x-transition:leave-end="opacity-0 scale-95 translate-y-4"
-         @click.stop
-         class="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden">
-        <!-- 头部 -->
-        <div class="px-6 py-4 bg-gradient-to-r from-primary-500 to-primary-600">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path x-show="modal.mode === 'create'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        <path x-show="modal.mode === 'saveas'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-                    </svg>
-                </div>
-                <div>
-                    <h3 class="text-lg font-bold text-white" x-text="modal.mode === 'create' ? '新建模板' : '另存为模板'"></h3>
-                    <p class="text-xs text-primary-100" x-text="modal.mode === 'create' ? '创建一个空白模板' : '将当前内容保存为新模板'"></p>
-                </div>
-            </div>
-        </div>
-
-        <!-- 内容 -->
-        <div class="p-6">
-            <label class="block text-sm font-semibold text-slate-700 mb-2">模板名称</label>
-            <input type="text"
-                   x-model="modal.inputValue"
-                   @keydown.enter="modal.confirm()"
-                   @keydown.escape="modal.show = false"
-                   placeholder="请输入模板名称..."
-                   class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all text-sm"
-                   autofocus>
-
-            <!-- 错误提示 -->
-            <p x-show="modal.error"
-               x-text="modal.error"
-               class="mt-2 text-sm text-danger-600 flex items-center gap-1">
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                </svg>
-                <span x-text="modal.error"></span>
-            </p>
-
-            <!-- 已存在的模板提示 -->
-            <div x-show="modal.mode === 'create' && modal.inputValue && availableTemplates.includes(modal.inputValue)"
-                 class="mt-2 text-sm text-amber-600 flex items-center gap-1">
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                </svg>
-                该模板名称已存在
-            </div>
-        </div>
-
-        <!-- 底部按钮 -->
-        <div class="px-6 py-4 bg-slate-50 flex gap-3">
-            <button @click="modal.show = false"
-                    class="flex-1 py-2.5 px-4 border border-slate-200 hover:bg-slate-100 text-slate-600 rounded-xl font-medium transition-all duration-200">
-                取消
+                <template x-if="progress.active">
+                    <svg class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                </template>
+                <span x-text="progress.active ? '正在生成…' : '开始生成水印'"></span>
             </button>
-            <button @click="modal.confirm()"
-                    :disabled="!modal.inputValue || !modal.inputValue.trim()"
-                    class="flex-1 py-2.5 px-4 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-xl font-medium shadow-lg shadow-primary-500/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
-                确认
-            </button>
-        </div>
+            <p class="text-center text-xs text-slate-400 mt-2" x-show="!canStart && !progress.active"
+               x-text="!photos.length ? '请先上传照片' : (!selectedTemplate ? '请选择一个水印样式' : '')"></p>
+        </section>
+
+        <p class="text-center text-xs text-slate-400 pt-2">
+            照片仅用于本次处理，处理完即可下载。云端版建议单次上传不超过约 4MB / 张。
+        </p>
     </div>
     </template>
-</div>
+</main>
 
 <script>
-    function treeNode(node, isInput) {
-        return {
-            node: node,
-            isInput: isInput,
-            isOpen: true,
-
-            get isFile() {
-                return !!this.node.is_file;
-            },
-
-            get hasChildren() {
-                return this.node.children && this.node.children.length > 0;
-            },
-
-            get value() {
-                return this.node.value || this.node.key;
-            },
-
-            get label() {
-                return this.node.label || this.node.title || this.node.name;
-            },
-
-            get isChecked() {
-                if (this.isFile) {
-                    return window.Alpine.store('app').selectedItems.includes(this.value);
-                }
-                return this.areAllChildrenSelected(this.node);
-            },
-
-            areAllChildrenSelected(node) {
-                if (!node.children) return false;
-                return node.children.every(child => {
-                    if (child.is_file) {
-                        return window.Alpine.store('app').selectedItems.includes(child.value || child.key);
-                    }
-                    return this.areAllChildrenSelected(child);
-                });
-            },
-
-            getAllFileValues(node) {
-                let paths = [];
-                if (node.is_file) {
-                    paths.push(node.value || node.key);
-                } else if (node.children) {
-                    node.children.forEach(child => {
-                        paths = paths.concat(this.getAllFileValues(child));
-                    });
-                }
-                return paths;
-            },
-
-            toggle() {
-                const app = window.Alpine.store('app');
-                const targetValues = this.getAllFileValues(this.node);
-
-                if (this.isChecked) {
-                    app.selectedItems = app.selectedItems.filter(v => !targetValues.includes(v));
-                } else {
-                    app.selectedItems = [...new Set([...app.selectedItems, ...targetValues])];
-                }
-            },
-
-            handleClick() {
-                if (this.isFile) {
-                    // 文件：显示预览
-                    const app = window.Alpine.store('app');
-                    app.preview.url = `/api/v1/file?path=${encodeURIComponent(this.value)}`;
-                    app.preview.name = this.label;
-                    app.preview.isFile = true;
-                } else if (this.hasChildren) {
-                    // 文件夹：切换折叠状态
-                    this.toggleFolder();
-                }
-            },
-
-            toggleFolder() {
-                if (this.hasChildren) {
-                    this.isOpen = !this.isOpen;
-                }
-            },
-
-            get folderIcon() {
-                return `<svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
-                </svg>`;
-            },
-
-            get fileIcon() {
-                return `<svg class="w-4 h-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                </svg>`;
-            }
-        }
-    }
+    // 模板（中文名）→ 预览图 / 友好描述
+    const STYLE_META = {
+        '标准水印':            { img: 'standard1',  name: '标准水印',   desc: '经典 EXIF 参数 + 相机品牌 Logo' },
+        '标准水印2':           { img: 'standard2',  name: '标准水印 ·留白', desc: '圆角阴影留白，适合社交分享' },
+        '尼康专用背景模糊':     { img: 'nikon_blur', name: '尼康 ·模糊', desc: '尼康风格，模糊背景衬底' },
+        '背景模糊':            { img: 'blur',       name: '背景模糊',   desc: '参数居中，模糊背景' },
+        '右下角参数':          { img: 'normal1',    name: '极简角标',   desc: '右下角小字参数，低调不抢镜' },
+        '文件夹名+右下角参数':  { img: 'normal2',    name: '文件夹+时间', desc: '文件夹名称 + 拍摄时间' },
+        'logo居中':           { img: 'center_logo',name: 'Logo 居中',  desc: '中心 Logo，四周自定义文字' },
+    };
 
     function app() {
         return {
-            isStatic: true,
-            loading: {files: false, process: false},
-            config: {input_folder: '', output_folder: '', template: '{}', template_name: '', quality: 100, override_existed: false},
-            availableTemplates: [],
-            inputTreeData: [],
-            outputTreeData: [],
-            treeKey: 0,
-            selectedItems: [],
-            preview: {url: '', name: '', isFile: false},
-            aceEditor: null,
             cloudMode: false,
-            sessionId: null,
+            view: 'edit',            // 'edit' | 'done'
+            uploading: false,
             isDragging: false,
-            progress: {
-                active: false,
-                complete: false,
-                total: 0,
-                processed: 0,
-                success: 0,
-                failure: 0,
-                skipped: 0,
-                percent: 0,
-                current: '',
-                message: '',
-                completeMessage: ''
-            },
-            modal: {
-                show: false,
-                mode: 'create', // 'create' or 'saveas'
-                inputValue: '',
-                error: '',
-                callback: null,
-
-                open(mode, callback) {
-                    this.mode = mode;
-                    this.callback = callback;
-                    this.inputValue = '';
-                    this.error = '';
-                    this.show = true;
-                    // 自动聚焦输入框
-                    queueMicrotask(() => {
-                        const input = document.querySelector('input[x-model="modal.inputValue"]');
-                        if (input) input.focus();
-                    });
-                },
-
-                confirm() {
-                    const name = this.inputValue.trim();
-                    if (!name) {
-                        this.error = '请输入模板名称';
-                        return;
-                    }
-
-                    // 检查是否已存在（通过 store 获取 availableTemplates）
-                    const app = Alpine.store('app');
-                    if (app.availableTemplates.includes(name)) {
-                        this.error = `模板 "${name}" 已存在`;
-                        return;
-                    }
-
-                    this.show = false;
-                    if (this.callback) {
-                        this.callback(name);
-                    }
-                }
-            },
-
-            get isValidConfig() {
-                return this.cloudMode || this.isStatic;
-            },
+            sessionId: null,
+            photos: [],              // [{label, value}]
+            templates: [],
+            selectedTemplate: '',
+            quality: 92,
+            qualityOptions: [
+                { label: '标准', value: 80 },
+                { label: '高清', value: 92 },
+                { label: '最高', value: 100 },
+            ],
+            results: [],
+            progress: { active: false, total: 0, success: 0, failure: 0, skipped: 0, percent: 0, message: '' },
 
             get canStart() {
-                return (this.cloudMode || this.isStatic) && this.selectedItems.length > 0 && !this.progress.active;
+                return this.photos.length > 0 && this.selectedTemplate && !this.progress.active;
+            },
+
+            styleMeta(name) {
+                return STYLE_META[name] || { img: '', name: name, desc: '自定义模板' };
+            },
+
+            thumbUrl(path) {
+                return `/api/v1/file?path=${encodeURIComponent(path)}`;
             },
 
             async init() {
-                Alpine.store('app', this);
-                this.initEditor();
-
-                this.toast = (msg, type = 'info') => {
-                    Toastify({
-                        text: msg,
-                        duration: 3000,
-                        gravity: "top",
-                        position: "center",
-                        style: {
-                            background: type === 'error' ? "#ef4444" : (type === 'success' ? "#10b981" : "#3b82f6"),
-                            borderRadius: "12px",
-                            fontSize: "14px",
-                            fontWeight: "500",
-                            boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
-                            padding: "12px 24px"
-                        }
-                    }).showToast();
-                };
+                this.toast = (msg, type = 'info') => Toastify({
+                    text: msg, duration: 3000, gravity: 'top', position: 'center',
+                    style: {
+                        background: type === 'error' ? '#ef4444' : (type === 'success' ? '#10b981' : '#0ea5e9'),
+                        borderRadius: '12px', fontSize: '14px', fontWeight: '500', padding: '12px 24px',
+                    }
+                }).showToast();
 
                 await this.detectMode();
-                await this.fetchConfig();
-                if (!this.cloudMode) await this.fetchFiles();
-            },
-
-            initEditor() {
-                this.aceEditor = ace.edit("json-editor");
-                this.aceEditor.setTheme("ace/theme/textmate");
-                this.aceEditor.session.setMode("ace/mode/json");
-                this.aceEditor.setShowPrintMargin(false);
-                this.aceEditor.setReadOnly(true);
-
-                this.aceEditor.on('change', () => {
-                    this.config.template = this.aceEditor.getValue();
-                });
-            },
-
-            enableEdit() {
-                this.isStatic = false;
-                this.aceEditor.setReadOnly(false);
-                this.aceEditor.container.style.backgroundColor = "#fff";
-            },
-
-            async resetConfig() {
-                await this.fetchConfig();
-            },
-
-            async fetchConfig() {
-                try {
-                    const res = await fetch('/api/v1/config');
-                    const json = await res.json();
-                    const data = this.normalizeApiResponse(json);
-
-                    if (data) {
-                        this.config = {...data};
-                        let tplStr = typeof this.config.template === 'object' ?
-                            JSON.stringify(this.config.template, null, 2) :
-                            this.config.template;
-
-                        this.aceEditor.setValue(tplStr || '{}', -1);
-                        this.isStatic = true;
-                        this.aceEditor.setReadOnly(true);
-                        this.aceEditor.container.style.backgroundColor = "#f9fafb";
-
-                        // 获取模板列表
-                        if (data.templates) {
-                            this.availableTemplates = data.templates;
-                        }
-                    }
-                } catch (e) {
-                    this.toast("获取配置失败: " + e.message, 'error');
-                }
-            },
-
-            async switchTemplate(templateName) {
-                try {
-                    const res = await fetch(`/api/v1/template/${templateName}`);
-                    if (!res.ok) {
-                        throw new Error(`加载模板失败: ${res.statusText}`);
-                    }
-                    const json = await res.json();
-                    const tplStr = typeof json.content === 'object' ?
-                        JSON.stringify(json.content, null, 2) :
-                        json.content;
-
-                    this.aceEditor.setValue(tplStr || '{}', -1);
-                    this.config.template = tplStr;
-                    this.config.template_name = templateName;
-                    this.toast(`已切换到模板: ${templateName}`, 'success');
-                } catch (e) {
-                    this.toast("切换模板失败: " + e.message, 'error');
-                }
-            },
-
-            async createNewTemplate() {
-                // 打开模态框，传入回调函数
-                this.modal.open('create', async (templateName) => {
-                    try {
-                        const res = await fetch('/api/v1/template', {
-                            method: 'POST',
-                            headers: {'Content-Type': 'application/json'},
-                            body: JSON.stringify({
-                                template_name: templateName,
-                                content: '[]'
-                            })
-                        });
-
-                        if (!res.ok) {
-                            const json = await res.json();
-                            throw new Error(json.error || '创建模板失败');
-                        }
-
-                        // 刷新模板列表
-                        await this.fetchConfig();
-
-                        // 切换到新模板并启用编辑
-                        this.config.template_name = templateName;
-                        this.config.template = '[]';
-                        this.aceEditor.setValue('[]', -1);
-                        this.enableEdit();
-
-                        this.toast(`已创建新模板: ${templateName}`, 'success');
-                    } catch (e) {
-                        this.toast("创建模板失败: " + e.message, 'error');
-                    }
-                });
-            },
-
-            async saveAsTemplate() {
-                // 打开模态框，传入回调函数
-                this.modal.open('saveas', async (templateName) => {
-                    const jsonVal = this.aceEditor.getValue();
-                    try {
-                        JSON.parse(jsonVal);
-                    } catch (e) {
-                        this.toast("JSON 格式错误，无法保存", 'error');
-                        return;
-                    }
-
-                    try {
-                        const res = await fetch('/api/v1/template', {
-                            method: 'POST',
-                            headers: {'Content-Type': 'application/json'},
-                            body: JSON.stringify({
-                                template_name: templateName,
-                                content: jsonVal
-                            })
-                        });
-
-                        if (!res.ok) {
-                            const json = await res.json();
-                            throw new Error(json.error || '保存模板失败');
-                        }
-
-                        // 刷新模板列表
-                        await this.fetchConfig();
-
-                        // 切换到新模板
-                        this.config.template_name = templateName;
-                        this.config.template = jsonVal;
-
-                        this.toast(`已另存为模板: ${templateName}`, 'success');
-                    } catch (e) {
-                        this.toast("另存为失败: " + e.message, 'error');
-                    }
-                });
-            },
-
-            async saveConfig() {
-                const jsonVal = this.aceEditor.getValue();
-                try {
-                    JSON.parse(jsonVal);
-                } catch (e) {
-                    this.toast("JSON 格式错误", 'error');
-                    return;
-                }
-
-                try {
-                    const res = await fetch('/api/v1/config', {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({...this.config, template: jsonVal})
-                    });
-
-                    if (res.ok) {
-                        this.isStatic = true;
-                        this.aceEditor.setReadOnly(true);
-                        this.toast("配置已保存", 'success');
-                        this.fetchFiles(true);
-                    } else {
-                        throw new Error("服务端错误");
-                    }
-                } catch (e) {
-                    this.toast("保存失败: " + e.message, 'error');
-                }
-            },
-
-            async fetchFiles(renderInput=true) {
-                this.loading.files = true;
-                console.log('[fetchFiles] 开始请求, renderInput=', renderInput);
-
-                try {
-                    const treeUrl = (this.cloudMode && this.sessionId)
-                        ? `/api/v1/file/tree?session_id=${encodeURIComponent(this.sessionId)}`
-                        : '/api/v1/file/tree';
-                    const res = await fetch(treeUrl, {
-                        method: 'GET',
-                        headers: {
-                            'Cache-Control': 'no-cache',
-                            'Pragma': 'no-cache'
-                        },
-                        cache: 'no-store'
-                    });
-
-                    console.log('[fetchFiles] 响应状态:', res.status, res.statusText);
-
-                    if (!res.ok) {
-                        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-                    }
-
-                    const json = await res.json();
-                    const data = this.normalizeApiResponse(json);
-                    console.log('[fetchFiles] 解析完成, input_files:', data.input_files?.length, 'output_files:', data.output_files?.length);
-
-                    const allCurrentFileValues = new Set();
-                    const collectValues = (node) => {
-                        if (node.is_file) {
-                            allCurrentFileValues.add(node.value || node.key);
-                        }
-                        if (node.children) {
-                            node.children.forEach(collectValues);
-                        }
-                    };
-
-                    if (data.input_files) {
-                        data.input_files.forEach(collectValues);
-                        this.selectedItems = this.selectedItems.filter(v => allCurrentFileValues.has(v));
-
-                        // 增加 treeKey 强制重新渲染树节点
-                        this.treeKey = (this.treeKey || 0) + 1;
-
-                        if (renderInput) {
-                            this.inputTreeData = JSON.parse(JSON.stringify(data.input_files || []));
-                        }
-                        this.outputTreeData = JSON.parse(JSON.stringify(data.output_files || []));
-                    }
-                } catch (e) {
-                    console.error('[fetchFiles] 请求失败:', e);
-                    this.toast("文件列表加载失败: " + e.message, 'error');
-                } finally {
-                    console.log('[fetchFiles] 完成, loading.files = false');
-                    this.loading.files = false;
-                }
-            },
-
-            selectAll() {
-                const collectAllFiles = (nodes) => {
-                    let files = [];
-                    nodes.forEach(node => {
-                        if (node.is_file) {
-                            files.push(node.value || node.key);
-                        } else if (node.children) {
-                            files = files.concat(collectAllFiles(node.children));
-                        }
-                    });
-                    return files;
-                };
-
-                const allFiles = collectAllFiles(this.inputTreeData);
-                this.selectedItems = [...new Set([...this.selectedItems, ...allFiles])];
-            },
-
-            async startProcess() {
-                // 重置进度状态
-                this.progress.active = true;
-                this.progress.complete = false;
-                this.progress.total = this.selectedItems.length;
-                this.progress.processed = 0;
-                this.progress.success = 0;
-                this.progress.failure = 0;
-                this.progress.skipped = 0;
-                this.progress.percent = 0;
-                this.progress.current = '';
-                this.progress.message = '准备处理...';
-                this.progress.completeMessage = '';
-
-                try {
-                    const response = await fetch('/api/v1/start_process', {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({
-                            selectedItems: this.selectedItems,
-                            session_id: this.sessionId || undefined,
-                            quality: this.config.quality,
-                            template_name: this.config.template_name || undefined,
-                        })
-                    });
-
-                    if (!response.ok) {
-                        throw new Error('服务端错误');
-                    }
-
-                    const reader = response.body.getReader();
-                    const decoder = new TextDecoder();
-                    let buffer = '';
-                    let currentEvent = '';
-
-                    while (true) {
-                        const {done, value} = await reader.read();
-                        if (done) break;
-
-                        buffer += decoder.decode(value, {stream: true});
-                        const lines = buffer.split('\n');
-                        buffer = lines.pop() || ''; // 保留不完整的行
-
-                        for (const line of lines) {
-                            if (line.startsWith('event:')) {
-                                currentEvent = line.replace('event:', '').trim();
-                            } else if (line.startsWith('data:')) {
-                                const jsonStr = line.replace('data:', '').trim();
-                                try {
-                                    const data = JSON.parse(jsonStr);
-
-                                    // 更新进度数据
-                                    if (data.total !== undefined) this.progress.total = data.total;
-                                    if (data.processed !== undefined) this.progress.processed = data.processed;
-                                    if (data.success !== undefined) this.progress.success = data.success;
-                                    if (data.failure !== undefined) this.progress.failure = data.failure;
-                                    if (data.skipped !== undefined) this.progress.skipped = data.skipped;
-                                    if (data.percent !== undefined) this.progress.percent = data.percent;
-                                    if (data.current !== undefined) this.progress.current = data.current;
-                                    if (data.message !== undefined) this.progress.message = data.message;
-
-                                    // 处理完成事件
-                                    if (currentEvent === 'complete') {
-                                        this.progress.complete = true;
-                                        this.progress.completeMessage = data.message || '处理完成';
-                                        if (data.session_id) this.sessionId = data.session_id;
-                                    }
-                                } catch (e) {
-                                    console.error('解析 SSE 数据失败:', e, jsonStr);
-                                }
-                                currentEvent = ''; // 重置事件类型
-                            }
-                        }
-                    }
-
-                    // 等待 SSE 连接完全关闭后再刷新文件列表
-                    console.log('[startProcess] SSE 完成，等待连接关闭...');
-                    await new Promise(resolve => setTimeout(resolve, 500));
-                    await this.fetchFiles(false);
-
-                } catch (e) {
-                    this.toast('网络请求失败: ' + e.message, 'error');
-                    this.progress.active = false;
-                }
-
-                // 延迟关闭进度显示，让用户看到最终状态
-                setTimeout(() => {
-                    if (this.progress.complete) {
-                        this.progress.active = false;
-                    }
-                }, 3000);
-            },
-
-            normalizeApiResponse(json) {
-                if (json && json.data && json.status === 0) return json.data;
-                if (json && json.data) return json.data;
-                return json;
+                await this.loadTemplates();
             },
 
             async detectMode() {
                 try {
                     const res = await fetch('/api/v1/mode');
+                    this.cloudMode = !!(await res.json()).cloud;
+                } catch (e) { this.cloudMode = false; }
+            },
+
+            async loadTemplates() {
+                try {
+                    const res = await fetch('/api/v1/config');
                     const data = await res.json();
-                    this.cloudMode = !!data.cloud;
+                    this.templates = data.templates || [];
+                    // 默认选中：优先“标准水印”，否则第一个
+                    this.selectedTemplate = this.templates.includes(data.template_name) ? data.template_name
+                        : (this.templates.includes('标准水印') ? '标准水印' : (this.templates[0] || ''));
                 } catch (e) {
-                    this.cloudMode = false;
+                    this.toast('加载样式失败: ' + e.message, 'error');
                 }
             },
 
             async uploadFiles(fileList) {
-                if (!fileList || fileList.length === 0) return;
+                if (!fileList || !fileList.length) return;
                 const formData = new FormData();
-                const sid = this.sessionId || '';
-                if (sid) formData.append('session_id', sid);
+                if (this.sessionId) formData.append('session_id', this.sessionId);
                 for (const f of fileList) formData.append('files', f);
 
-                this.loading.files = true;
+                this.uploading = true;
                 try {
-                    const res = await fetch('/api/v1/upload', {method: 'POST', body: formData});
+                    const res = await fetch('/api/v1/upload', { method: 'POST', body: formData });
                     if (!res.ok) throw new Error(`上传失败 ${res.status}`);
                     const data = await res.json();
                     this.sessionId = data.session_id;
 
-                    // 合并到现有文件列表
-                    const existing = this.inputTreeData[0]?.children || [];
-                    const existingValues = new Set(existing.map(f => f.value));
-                    const newFiles = data.files.filter(f => !existingValues.has(f.value));
-                    const merged = [...existing, ...newFiles];
-                    this.inputTreeData = [{children: merged, label: 'Root'}];
-                    this.treeKey++;
-
-                    // 自动全选新上传的文件
-                    const newValues = newFiles.map(f => f.value);
-                    this.selectedItems = [...new Set([...this.selectedItems, ...newValues])];
-                    this.toast(`已上传 ${data.files.length} 张照片`, 'success');
+                    const existing = new Set(this.photos.map(p => p.value));
+                    const added = (data.files || []).filter(f => !existing.has(f.value));
+                    this.photos = [...this.photos, ...added];
+                    this.toast(`已上传 ${added.length} 张照片`, 'success');
                 } catch (e) {
                     this.toast('上传失败: ' + e.message, 'error');
                 } finally {
-                    this.loading.files = false;
+                    this.uploading = false;
                 }
             },
 
-            downloadFile(filePath) {
+            removePhoto(idx) {
+                this.photos.splice(idx, 1);
+            },
+
+            async generate() {
+                this.progress = { active: true, total: this.photos.length, success: 0, failure: 0, skipped: 0, percent: 0, message: '准备处理…' };
+                try {
+                    const response = await fetch('/api/v1/start_process', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            selectedItems: this.photos.map(p => p.value),
+                            session_id: this.sessionId || undefined,
+                            quality: this.quality,
+                            template_name: this.selectedTemplate || undefined,
+                        })
+                    });
+                    if (!response.ok) throw new Error('服务端错误');
+
+                    const reader = response.body.getReader();
+                    const decoder = new TextDecoder();
+                    let buffer = '', currentEvent = '';
+
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        if (done) break;
+                        buffer += decoder.decode(value, { stream: true });
+                        const lines = buffer.split('\n');
+                        buffer = lines.pop() || '';
+                        for (const line of lines) {
+                            if (line.startsWith('event:')) {
+                                currentEvent = line.slice(6).trim();
+                            } else if (line.startsWith('data:')) {
+                                try {
+                                    const d = JSON.parse(line.slice(5).trim());
+                                    if (d.total !== undefined) this.progress.total = d.total;
+                                    if (d.success !== undefined) this.progress.success = d.success;
+                                    if (d.failure !== undefined) this.progress.failure = d.failure;
+                                    if (d.skipped !== undefined) this.progress.skipped = d.skipped;
+                                    if (d.percent !== undefined) this.progress.percent = d.percent;
+                                    if (d.message !== undefined) this.progress.message = d.message;
+                                    if (currentEvent === 'complete' && d.session_id) this.sessionId = d.session_id;
+                                } catch (e) {}
+                                currentEvent = '';
+                            }
+                        }
+                    }
+
+                    await new Promise(r => setTimeout(r, 400));
+                    await this.loadResults();
+                } catch (e) {
+                    this.toast('处理失败: ' + e.message, 'error');
+                } finally {
+                    this.progress.active = false;
+                }
+            },
+
+            async loadResults() {
+                try {
+                    const url = this.sessionId
+                        ? `/api/v1/file/tree?session_id=${encodeURIComponent(this.sessionId)}`
+                        : '/api/v1/file/tree';
+                    const res = await fetch(url, { cache: 'no-store' });
+                    const data = await res.json();
+                    const flat = [];
+                    const walk = (nodes) => (nodes || []).forEach(n => {
+                        if (n.is_file) flat.push({ label: n.label, value: n.value });
+                        if (n.children) walk(n.children);
+                    });
+                    walk(data.output_files);
+                    this.results = flat;
+                    this.view = 'done';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } catch (e) {
+                    this.toast('读取结果失败: ' + e.message, 'error');
+                }
+            },
+
+            downloadOne(path) {
                 const a = document.createElement('a');
-                a.href = `/api/v1/download?path=${encodeURIComponent(filePath)}`;
-                a.download = filePath.split('/').pop() || 'output.jpg';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            }
+                a.href = `/api/v1/download?path=${encodeURIComponent(path)}`;
+                a.download = path.split(/[\\/]/).pop() || 'output.jpg';
+                document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            },
+
+            downloadZip() {
+                if (!this.sessionId) return;
+                window.location.href = `/api/v1/download_zip?session_id=${encodeURIComponent(this.sessionId)}`;
+            },
+
+            reset() {
+                this.view = 'edit';
+                this.photos = [];
+                this.results = [];
+                this.sessionId = null;
+                this.progress = { active: false, total: 0, success: 0, failure: 0, skipped: 0, percent: 0, message: '' };
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            },
         }
     }
+
+    // 简单淡入动画
+    const style = document.createElement('style');
+    style.textContent = '@keyframes fadeIn{from{opacity:0}to{opacity:1}}';
+    document.head.appendChild(style);
 </script>
 </body>
 </html>
