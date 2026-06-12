@@ -1,24 +1,67 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{title}}</title>
+
+    <title>Free Online Photo Watermark Tool – Add EXIF &amp; Camera Info | Semi-Utils Pro</title>
+    <meta name="description" content="Add beautiful EXIF watermarks to your photos online for free. Stamp camera model, lens, aperture, shutter speed, ISO and brand logo. No install, no sign-up — works right in your browser.">
+    <meta name="keywords" content="photo watermark, exif watermark, camera watermark, add watermark to photo, photography watermark, camera info watermark, picture frame watermark online">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/">
+    <link rel="icon" href="/static/logo.ico">
+    <meta name="theme-color" content="#0ea5e9">
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Free Online Photo Watermark Tool – Semi-Utils Pro">
+    <meta property="og:description" content="Add beautiful EXIF watermarks to your photos online for free. Camera model, lens, aperture, shutter, ISO and brand logo. No install, no sign-up.">
+    <meta property="og:url" content="/">
+    <meta property="og:image" content="/static/standard1.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Free Online Photo Watermark Tool – Semi-Utils Pro">
+    <meta name="twitter:description" content="Add beautiful EXIF watermarks to your photos online for free.">
+    <meta name="twitter:image" content="/static/standard1.jpeg">
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Semi-Utils Pro",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Any (web browser)",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": "Free online tool to add EXIF watermarks (camera model, lens, aperture, shutter, ISO and brand logo) to your photos."
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {"@type":"Question","name":"Is this photo watermark tool free?","acceptedAnswer":{"@type":"Answer","text":"Yes. Semi-Utils Pro is completely free to use online. There is no sign-up and no watermark on the output other than the camera-info watermark you choose."}},
+        {"@type":"Question","name":"What does the watermark show?","acceptedAnswer":{"@type":"Answer","text":"It reads your photo's EXIF data and renders the camera model, lens, aperture, shutter speed, ISO, capture time and an optional camera brand logo in a clean frame."}},
+        {"@type":"Question","name":"Are my photos kept private?","acceptedAnswer":{"@type":"Answer","text":"Photos are used only to create the result you download. They are processed temporarily and not shared or sold. See the Privacy Policy for details."}},
+        {"@type":"Question","name":"Which formats are supported?","acceptedAnswer":{"@type":"Answer","text":"JPG, PNG and HEIC are supported. Large images are automatically compressed in your browser while keeping the EXIF data the watermark needs."}}
+      ]
+    }
+    </script>
+
+    <script>
+        (function(){
+            var o = location.origin + '/';
+            var c = document.querySelector('link[rel="canonical"]'); if (c) c.href = o;
+            var ogu = document.querySelector('meta[property="og:url"]'); if (ogu) ogu.setAttribute('content', o);
+        })();
+    </script>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#f0f9ff', 100: '#e0f2fe', 200: '#bae6fd', 300: '#7dd3fc',
-                            400: '#38bdf8', 500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1',
-                            800: '#075985', 900: '#0c4a6e',
-                        }
-                    }
-                }
-            }
+            theme: { extend: { colors: { primary: {
+                50:'#f0f9ff',100:'#e0f2fe',200:'#bae6fd',300:'#7dd3fc',400:'#38bdf8',
+                500:'#0ea5e9',600:'#0284c7',700:'#0369a1',800:'#075985',900:'#0c4a6e' } } } }
         }
     </script>
 
@@ -34,53 +77,75 @@
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         [x-cloak] { display: none !important; }
         .step-num { width: 28px; height: 28px; }
+        @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
     </style>
 </head>
 <body class="bg-gradient-to-b from-slate-50 to-slate-100 min-h-screen text-slate-800"
       x-data="app()" x-init="init()" x-cloak>
 
-<!-- 顶部 -->
+<!-- Header -->
 <header class="sticky top-0 z-20 backdrop-blur bg-white/80 border-b border-slate-200/60">
-    <div class="max-w-4xl mx-auto px-5 h-16 flex items-center justify-between">
-        <div class="flex items-center gap-3">
+    <div class="max-w-5xl mx-auto px-5 h-16 flex items-center justify-between">
+        <a href="/" class="flex items-center gap-3">
             <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary-500/30">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
             </div>
             <div>
-                <h1 class="font-bold text-lg tracking-tight">{{ title }}</h1>
-                <p class="text-xs text-slate-400">给照片一键添加精美水印</p>
+                <h1 class="font-bold text-lg tracking-tight">Semi-Utils Pro</h1>
+                <p class="text-xs text-slate-400" x-text="t('tagline')">Add EXIF watermarks to your photos</p>
             </div>
+        </a>
+        <div class="flex items-center gap-3">
+            <span class="hidden sm:inline text-xs px-2.5 py-1 rounded-full font-medium bg-slate-100 text-slate-500"
+                  x-text="cloudMode ? t('modeCloud') : t('modeLocal')"></span>
+            <select x-model="lang" @change="setLang($event.target.value)"
+                    aria-label="Language"
+                    class="h-9 px-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-600 focus:border-primary-400 outline-none cursor-pointer">
+                <option value="en">English</option>
+                <option value="zh">简体中文</option>
+                <option value="ja">日本語</option>
+                <option value="ko">한국어</option>
+                <option value="es">Español</option>
+            </select>
         </div>
-        <span class="text-xs px-2.5 py-1 rounded-full font-medium bg-slate-100 text-slate-500"
-              x-text="cloudMode ? '云端版' : '本地版'"></span>
     </div>
 </header>
 
-<main class="max-w-4xl mx-auto px-5 py-8 space-y-6">
+<!-- SEO Hero (indexable copy) -->
+<section class="max-w-5xl mx-auto px-5 pt-10 pb-2 text-center">
+    <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900" x-text="t('heroTitle')">
+        Free Online Photo Watermark Tool
+    </h2>
+    <p class="mt-3 text-slate-500 max-w-2xl mx-auto text-[15px] leading-relaxed" x-text="t('heroSub')">
+        Add a clean EXIF watermark — camera model, lens, aperture, shutter speed, ISO and brand logo — to any photo, right in your browser. No install, no sign-up.
+    </p>
+</section>
 
-    <!-- ============ 结果页 ============ -->
+<main class="max-w-5xl mx-auto px-5 py-6 space-y-6">
+
+    <!-- ===== Result view ===== -->
     <template x-if="view === 'done'">
-        <div class="space-y-6 animate-[fadeIn_.3s_ease-out]">
+        <div class="space-y-6" style="animation: fadeIn .3s ease-out">
             <div class="text-center py-4">
                 <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-emerald-100 flex items-center justify-center">
                     <svg class="w-9 h-9 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                 </div>
-                <h2 class="text-xl font-bold">处理完成！</h2>
-                <p class="text-sm text-slate-500 mt-1" x-text="`成功 ${progress.success} 张，跳过 ${progress.skipped} 张，失败 ${progress.failure} 张`"></p>
+                <h2 class="text-xl font-bold" x-text="t('doneTitle')"></h2>
+                <p class="text-sm text-slate-500 mt-1" x-text="t('doneSummary', {s: progress.success, k: progress.skipped, f: progress.failure})"></p>
             </div>
 
             <div class="flex flex-wrap justify-center gap-3">
                 <button @click="downloadZip()"
                         class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-xl font-semibold shadow-lg shadow-emerald-500/30 transition flex items-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                    打包下载全部 (ZIP)
+                    <span x-text="t('btnZip')"></span>
                 </button>
                 <button @click="reset()"
                         class="px-6 py-3 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl font-semibold transition flex items-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                    再做一批
+                    <span x-text="t('btnRedo')"></span>
                 </button>
             </div>
 
@@ -88,13 +153,13 @@
                 <template x-for="(r, i) in results" :key="r.value">
                     <div class="group relative rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
                         <div class="aspect-square bg-slate-100 flex items-center justify-center overflow-hidden">
-                            <img :src="thumbUrl(r.value)" loading="lazy" class="w-full h-full object-cover">
+                            <img :src="thumbUrl(r.value)" loading="lazy" alt="watermarked photo" class="w-full h-full object-cover">
                         </div>
                         <div class="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition flex items-center justify-center opacity-0 group-hover:opacity-100">
                             <button @click="downloadOne(r.value)"
                                     class="px-4 py-2 bg-white/95 text-slate-800 rounded-lg text-sm font-medium shadow flex items-center gap-1.5">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                                下载
+                                <span x-text="t('btnDownload')"></span>
                             </button>
                         </div>
                         <div class="px-2 py-1.5 text-xs text-slate-500 truncate" x-text="r.label"></div>
@@ -104,16 +169,16 @@
         </div>
     </template>
 
-    <!-- ============ 编辑页 ============ -->
+    <!-- ===== Edit view ===== -->
     <template x-if="view === 'edit'">
     <div class="space-y-6">
 
-        <!-- 步骤 1：上传 -->
+        <!-- Step 1: Upload -->
         <section class="bg-white rounded-2xl shadow-sm border border-slate-200/60 p-6">
             <div class="flex items-center gap-3 mb-4">
                 <span class="step-num rounded-full bg-primary-500 text-white flex items-center justify-center font-bold text-sm shrink-0">1</span>
-                <h2 class="font-bold text-lg">上传照片</h2>
-                <span x-show="photos.length" class="text-sm text-slate-400" x-text="`已选 ${photos.length} 张`"></span>
+                <h3 class="font-bold text-lg" x-text="t('s1')"></h3>
+                <span x-show="photos.length" class="text-sm text-slate-400" x-text="t('s1count', {n: photos.length})"></span>
             </div>
 
             <div @dragover.prevent="isDragging = true"
@@ -128,18 +193,17 @@
                 <svg class="w-12 h-12 mx-auto mb-3 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
                 </svg>
-                <p class="text-slate-600 font-medium" x-text="uploading ? '处理中…' : '点击选择，或将照片拖到这里'"></p>
-                <p class="text-xs text-slate-400 mt-1">支持 JPG / PNG / HEIC（大图会自动压缩，保留拍摄参数）</p>
+                <p class="text-slate-600 font-medium" x-text="uploading ? t('dropBusy') : t('dropIdle')"></p>
+                <p class="text-xs text-slate-400 mt-1" x-text="t('dropFormats')"></p>
             </div>
 
-            <!-- 缩略图网格 -->
             <div x-show="photos.length" class="grid grid-cols-3 sm:grid-cols-5 gap-3 mt-4">
                 <template x-for="(p, i) in photos" :key="p.value">
                     <div class="group relative aspect-square rounded-lg overflow-hidden border border-slate-200 bg-slate-100">
-                        <img :src="thumbUrl(p.value)" loading="lazy" class="w-full h-full object-cover">
+                        <img :src="thumbUrl(p.value)" loading="lazy" alt="" class="w-full h-full object-cover">
                         <button @click="removePhoto(i)"
                                 class="absolute top-1 right-1 w-6 h-6 rounded-full bg-black/60 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition hover:bg-red-500"
-                                title="移除">
+                                :title="t('remove')">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
                         </button>
                     </div>
@@ -147,63 +211,61 @@
             </div>
         </section>
 
-        <!-- 步骤 2：选择样式 -->
+        <!-- Step 2: Style -->
         <section class="bg-white rounded-2xl shadow-sm border border-slate-200/60 p-6">
             <div class="flex items-center gap-3 mb-4">
                 <span class="step-num rounded-full bg-primary-500 text-white flex items-center justify-center font-bold text-sm shrink-0">2</span>
-                <h2 class="font-bold text-lg">选择水印样式</h2>
+                <h3 class="font-bold text-lg" x-text="t('s2')"></h3>
             </div>
 
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                <template x-for="t in templates" :key="t">
-                    <button @click="selectedTemplate = t"
-                            :class="selectedTemplate === t ? 'border-primary-500 ring-2 ring-primary-500/30' : 'border-slate-200 hover:border-primary-300'"
+                <template x-for="t2 in templates" :key="t2">
+                    <button @click="selectedTemplate = t2"
+                            :class="selectedTemplate === t2 ? 'border-primary-500 ring-2 ring-primary-500/30' : 'border-slate-200 hover:border-primary-300'"
                             class="text-left rounded-xl border-2 overflow-hidden bg-white transition relative">
                         <div class="aspect-[4/3] bg-slate-100 flex items-center justify-center overflow-hidden">
-                            <template x-if="styleMeta(t).img">
-                                <img :src="`/static/${styleMeta(t).img}.jpeg`" loading="lazy" class="w-full h-full object-cover">
+                            <template x-if="styleMeta(t2).img">
+                                <img :src="`/static/${styleMeta(t2).img}.jpeg`" loading="lazy" :alt="styleMeta(t2).name" class="w-full h-full object-cover">
                             </template>
-                            <template x-if="!styleMeta(t).img">
+                            <template x-if="!styleMeta(t2).img">
                                 <svg class="w-10 h-10 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                             </template>
                         </div>
                         <div class="absolute top-2 right-2 w-6 h-6 rounded-full bg-primary-500 text-white items-center justify-center shadow"
-                             :class="selectedTemplate === t ? 'flex' : 'hidden'">
+                             :class="selectedTemplate === t2 ? 'flex' : 'hidden'">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
                         </div>
                         <div class="p-3">
-                            <p class="font-semibold text-sm truncate" x-text="styleMeta(t).name || t"></p>
-                            <p class="text-xs text-slate-400 mt-0.5 line-clamp-2" x-text="styleMeta(t).desc || '自定义模板'"></p>
+                            <p class="font-semibold text-sm truncate" x-text="styleMeta(t2).name || t2"></p>
+                            <p class="text-xs text-slate-400 mt-0.5 line-clamp-2" x-text="styleMeta(t2).desc"></p>
                         </div>
                     </button>
                 </template>
             </div>
         </section>
 
-        <!-- 步骤 3：生成 -->
+        <!-- Step 3: Generate -->
         <section class="bg-white rounded-2xl shadow-sm border border-slate-200/60 p-6">
             <div class="flex items-center gap-3 mb-4">
                 <span class="step-num rounded-full bg-primary-500 text-white flex items-center justify-center font-bold text-sm shrink-0">3</span>
-                <h2 class="font-bold text-lg">生成</h2>
+                <h3 class="font-bold text-lg" x-text="t('s3')"></h3>
             </div>
 
-            <!-- 画质选择 -->
             <div class="flex items-center gap-3 mb-5">
-                <span class="text-sm text-slate-500 shrink-0">输出画质</span>
+                <span class="text-sm text-slate-500 shrink-0" x-text="t('qLabel')"></span>
                 <div class="flex gap-2">
                     <template x-for="opt in qualityOptions" :key="opt.value">
                         <button @click="quality = opt.value"
                                 :class="quality === opt.value ? 'bg-primary-500 text-white border-primary-500' : 'bg-white text-slate-600 border-slate-200 hover:border-primary-300'"
                                 class="px-4 py-1.5 rounded-lg border text-sm font-medium transition"
-                                x-text="opt.label"></button>
+                                x-text="t(opt.key)"></button>
                     </template>
                 </div>
             </div>
 
-            <!-- 进度（处理中） -->
             <div x-show="progress.active" class="mb-5">
                 <div class="flex justify-between items-center mb-2">
-                    <span class="text-sm font-medium text-slate-600" x-text="progress.message || '处理中…'"></span>
+                    <span class="text-sm font-medium text-slate-600" x-text="progress.message || t('processing')"></span>
                     <span class="text-sm font-bold text-primary-600" x-text="`${progress.percent}%`"></span>
                 </div>
                 <div class="h-2.5 bg-slate-100 rounded-full overflow-hidden">
@@ -220,101 +282,269 @@
                 <template x-if="progress.active">
                     <svg class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
                 </template>
-                <span x-text="progress.active ? '正在生成…' : '开始生成水印'"></span>
+                <span x-text="progress.active ? t('genBusy') : t('genBtn')"></span>
             </button>
             <p class="text-center text-xs text-slate-400 mt-2" x-show="!canStart && !progress.active"
-               x-text="!photos.length ? '请先上传照片' : (!selectedTemplate ? '请选择一个水印样式' : '')"></p>
+               x-text="!photos.length ? t('hintPhotos') : (!selectedTemplate ? t('hintStyle') : '')"></p>
         </section>
 
-        <p class="text-center text-xs text-slate-400 pt-2">
-            照片仅用于本次处理，处理完即可下载。超过 4MB 的大图会在本地自动压缩后再上传（拍摄参数保留）。
-        </p>
+        <p class="text-center text-xs text-slate-400 pt-2" x-text="t('footnote')"></p>
     </div>
     </template>
+
+    <!-- SEO: Features -->
+    <section class="pt-8">
+        <h2 class="text-2xl font-bold text-center text-slate-900" x-text="t('featTitle')">Why use this watermark tool</h2>
+        <div class="grid sm:grid-cols-3 gap-5 mt-6">
+            <div class="bg-white rounded-2xl border border-slate-200/60 p-5">
+                <h3 class="font-semibold mb-1" x-text="t('f1t')">Real EXIF data</h3>
+                <p class="text-sm text-slate-500" x-text="t('f1d')">Reads camera model, lens, aperture, shutter speed and ISO directly from your photo.</p>
+            </div>
+            <div class="bg-white rounded-2xl border border-slate-200/60 p-5">
+                <h3 class="font-semibold mb-1" x-text="t('f2t')">No install, no sign-up</h3>
+                <p class="text-sm text-slate-500" x-text="t('f2d')">Everything runs in your browser. Upload, generate and download in seconds.</p>
+            </div>
+            <div class="bg-white rounded-2xl border border-slate-200/60 p-5">
+                <h3 class="font-semibold mb-1" x-text="t('f3t')">Beautiful templates</h3>
+                <p class="text-sm text-slate-500" x-text="t('f3d')">Pick from clean, classic and blurred-background styles with brand logos.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEO: FAQ -->
+    <section class="pt-4 pb-4">
+        <h2 class="text-2xl font-bold text-center text-slate-900" x-text="t('faqTitle')">Frequently asked questions</h2>
+        <div class="max-w-3xl mx-auto mt-6 space-y-3">
+            <template x-for="i in 4" :key="i">
+                <details class="bg-white rounded-xl border border-slate-200/60 p-4">
+                    <summary class="font-medium cursor-pointer text-slate-800" x-text="t('q'+i)"></summary>
+                    <p class="text-sm text-slate-500 mt-2" x-text="t('a'+i)"></p>
+                </details>
+            </template>
+        </div>
+    </section>
 </main>
 
+<footer class="border-t border-slate-200/60 bg-white/60">
+    <div class="max-w-5xl mx-auto px-5 py-6 text-center text-xs text-slate-400 space-y-2">
+        <p x-text="t('footAttrib')"></p>
+        <p>
+            <a href="/privacy" class="hover:text-primary-600 underline" x-text="t('footPrivacy')">Privacy Policy</a>
+        </p>
+    </div>
+</footer>
+
 <script>
-    // 模板（中文名）→ 预览图 / 友好描述
+    // Watermark style names are kept fixed (English, like filter names); descriptions translate per language.
     const STYLE_META = {
-        '标准水印':            { img: 'standard1',  name: '标准水印',   desc: '经典 EXIF 参数 + 相机品牌 Logo' },
-        '标准水印2':           { img: 'standard2',  name: '标准水印 ·留白', desc: '圆角阴影留白，适合社交分享' },
-        '尼康专用背景模糊':     { img: 'nikon_blur', name: '尼康 ·模糊', desc: '尼康风格，模糊背景衬底' },
-        '背景模糊':            { img: 'blur',       name: '背景模糊',   desc: '参数居中，模糊背景' },
-        '右下角参数':          { img: 'normal1',    name: '极简角标',   desc: '右下角小字参数，低调不抢镜' },
-        '文件夹名+右下角参数':  { img: 'normal2',    name: '文件夹+时间', desc: '文件夹名称 + 拍摄时间' },
-        'logo居中':           { img: 'center_logo',name: 'Logo 居中',  desc: '中心 Logo，四周自定义文字' },
+        '标准水印':           { img: 'standard1',  name: 'Classic',      descKey: 'st_classic' },
+        '标准水印2':          { img: 'standard2',  name: 'Framed',       descKey: 'st_framed' },
+        '尼康专用背景模糊':    { img: 'nikon_blur', name: 'Nikon Blur',   descKey: 'st_nikon' },
+        '背景模糊':           { img: 'blur',       name: 'Blur',         descKey: 'st_blur' },
+        '右下角参数':         { img: 'normal1',    name: 'Minimal',      descKey: 'st_minimal' },
+        '文件夹名+右下角参数': { img: 'normal2',    name: 'Folder + Time',descKey: 'st_folder' },
+        'logo居中':          { img: 'center_logo',name: 'Center Logo',  descKey: 'st_center' },
     };
 
-    // ===== 上传前压缩（保留 EXIF）=====
-    // Vercel serverless 请求体上限约 4.5MB，超过会在边缘被拒（表现为 Failed to fetch）。
-    // 这里在浏览器内把大图压到 4MB 以下，并用 piexifjs 把原图 EXIF 转移到压缩图，
-    // 保证水印所需的相机参数（型号/光圈/快门/ISO）不丢失。
+    const I18N = {
+        en: {
+            tagline: 'Add EXIF watermarks to your photos',
+            modeCloud: 'Cloud', modeLocal: 'Local',
+            heroTitle: 'Free Online Photo Watermark Tool',
+            heroSub: 'Add a clean EXIF watermark — camera model, lens, aperture, shutter speed, ISO and brand logo — to any photo, right in your browser. No install, no sign-up.',
+            s1: 'Upload photos', s1count: '{n} selected',
+            dropIdle: 'Click to choose, or drop photos here', dropBusy: 'Working…',
+            dropFormats: 'JPG / PNG / HEIC — large images are compressed automatically (EXIF kept)',
+            s2: 'Choose a watermark style',
+            s3: 'Generate',
+            qLabel: 'Output quality', qStd: 'Standard', qHigh: 'HD', qMax: 'Max',
+            genBtn: 'Generate watermark', genBusy: 'Generating…', processing: 'Processing…',
+            hintPhotos: 'Please upload photos first', hintStyle: 'Please choose a watermark style',
+            footnote: 'Photos are used only for this session. Images over 4MB are compressed locally before upload (EXIF preserved).',
+            doneTitle: 'Done!', doneSummary: 'Success {s}, skipped {k}, failed {f}',
+            btnZip: 'Download all (ZIP)', btnRedo: 'Start over', btnDownload: 'Download', remove: 'Remove',
+            tCompressed: 'Compressed {n} large image(s)', tUploaded: 'Uploaded {n} photo(s)',
+            tUploadFail: 'Upload failed', tStyleFail: 'Failed to load styles', tProcessFail: 'Processing failed', tResultFail: 'Failed to load results',
+            eRead: 'Failed to read file', eHeic: 'HEIC is too large to compress in the browser — use the desktop app or convert to JPG first', eDecode: 'Could not decode image',
+            featTitle: 'Why use this watermark tool',
+            f1t: 'Real EXIF data', f1d: 'Reads camera model, lens, aperture, shutter speed and ISO directly from your photo.',
+            f2t: 'No install, no sign-up', f2d: 'Everything runs in your browser. Upload, generate and download in seconds.',
+            f3t: 'Beautiful templates', f3d: 'Pick from clean, classic and blurred-background styles with brand logos.',
+            faqTitle: 'Frequently asked questions',
+            q1: 'Is this photo watermark tool free?', a1: 'Yes, it is completely free with no sign-up and no extra watermark on the output.',
+            q2: 'What does the watermark show?', a2: 'It reads your EXIF data and renders camera model, lens, aperture, shutter, ISO, time and an optional brand logo.',
+            q3: 'Are my photos kept private?', a3: 'Photos are used only to create the result you download, processed temporarily and never shared or sold.',
+            q4: 'Which formats are supported?', a4: 'JPG, PNG and HEIC. Large images are compressed in your browser while keeping the EXIF the watermark needs.',
+            footAttrib: 'Based on the open-source project semi-utils (Apache License 2.0).', footPrivacy: 'Privacy Policy',
+            st_classic: 'Camera EXIF + brand logo', st_framed: 'Rounded corners, shadow & margin', st_nikon: 'Nikon-style blurred backdrop',
+            st_blur: 'Centered params, blurred backdrop', st_minimal: 'Small params in the bottom corner', st_folder: 'Folder name + capture time', st_center: 'Centered logo, custom text',
+        },
+        zh: {
+            tagline: '给照片添加 EXIF 参数水印',
+            modeCloud: '云端版', modeLocal: '本地版',
+            heroTitle: '免费在线照片水印工具',
+            heroSub: '在浏览器里给任意照片添加简洁的 EXIF 水印——相机型号、镜头、光圈、快门、ISO 和品牌 Logo。免安装、免注册。',
+            s1: '上传照片', s1count: '已选 {n} 张',
+            dropIdle: '点击选择，或将照片拖到这里', dropBusy: '处理中…',
+            dropFormats: 'JPG / PNG / HEIC，大图自动压缩（保留拍摄参数）',
+            s2: '选择水印样式',
+            s3: '生成',
+            qLabel: '输出画质', qStd: '标准', qHigh: '高清', qMax: '最高',
+            genBtn: '开始生成水印', genBusy: '正在生成…', processing: '处理中…',
+            hintPhotos: '请先上传照片', hintStyle: '请选择一个水印样式',
+            footnote: '照片仅用于本次处理。超过 4MB 的大图会在本地压缩后再上传（拍摄参数保留）。',
+            doneTitle: '处理完成！', doneSummary: '成功 {s} 张，跳过 {k} 张，失败 {f} 张',
+            btnZip: '打包下载全部 (ZIP)', btnRedo: '再做一批', btnDownload: '下载', remove: '移除',
+            tCompressed: '已自动压缩 {n} 张大图', tUploaded: '已上传 {n} 张照片',
+            tUploadFail: '上传失败', tStyleFail: '加载样式失败', tProcessFail: '处理失败', tResultFail: '读取结果失败',
+            eRead: '读取文件失败', eHeic: 'HEIC 照片过大且无法在浏览器压缩，请改用本地版或先转成 JPG', eDecode: '无法解码图片',
+            featTitle: '为什么用这个水印工具',
+            f1t: '真实 EXIF 数据', f1d: '直接从照片读取相机型号、镜头、光圈、快门和 ISO。',
+            f2t: '免安装免注册', f2d: '全程在浏览器内完成，几秒即可上传、生成、下载。',
+            f3t: '精美模板', f3d: '提供简洁、经典、模糊背景等多种风格，含品牌 Logo。',
+            faqTitle: '常见问题',
+            q1: '这个水印工具免费吗？', a1: '完全免费，无需注册，输出图片也不会附加额外水印。',
+            q2: '水印会显示什么？', a2: '读取 EXIF 后渲染相机型号、镜头、光圈、快门、ISO、时间和可选的品牌 Logo。',
+            q3: '我的照片安全吗？', a3: '照片仅用于生成你要下载的结果，临时处理，绝不分享或出售。',
+            q4: '支持哪些格式？', a4: 'JPG、PNG、HEIC。大图会在浏览器内压缩，同时保留水印所需的 EXIF。',
+            footAttrib: '基于开源项目 semi-utils（Apache License 2.0）。', footPrivacy: '隐私政策',
+            st_classic: '相机 EXIF 参数 + 品牌 Logo', st_framed: '圆角阴影留白，适合分享', st_nikon: '尼康风格模糊背景',
+            st_blur: '参数居中，模糊背景', st_minimal: '右下角小字参数', st_folder: '文件夹名 + 拍摄时间', st_center: '中心 Logo，自定义文字',
+        },
+        ja: {
+            tagline: '写真に EXIF ウォーターマークを追加',
+            modeCloud: 'クラウド', modeLocal: 'ローカル',
+            heroTitle: '無料オンライン写真ウォーターマークツール',
+            heroSub: 'カメラ機種・レンズ・絞り・シャッター速度・ISO・ブランドロゴなどの EXIF ウォーターマークを、ブラウザ上で写真に追加。インストール不要・登録不要。',
+            s1: '写真をアップロード', s1count: '{n} 枚選択中',
+            dropIdle: 'クリックして選択、またはここにドロップ', dropBusy: '処理中…',
+            dropFormats: 'JPG / PNG / HEIC — 大きい画像は自動圧縮（EXIF 保持）',
+            s2: 'ウォーターマークのスタイルを選択',
+            s3: '生成',
+            qLabel: '出力画質', qStd: '標準', qHigh: '高画質', qMax: '最高',
+            genBtn: 'ウォーターマークを生成', genBusy: '生成中…', processing: '処理中…',
+            hintPhotos: 'まず写真をアップロードしてください', hintStyle: 'スタイルを選択してください',
+            footnote: '写真は今回の処理にのみ使用されます。4MB を超える画像はアップロード前にローカルで圧縮されます（EXIF 保持）。',
+            doneTitle: '完了しました！', doneSummary: '成功 {s} 枚、スキップ {k} 枚、失敗 {f} 枚',
+            btnZip: 'すべてダウンロード (ZIP)', btnRedo: 'もう一度', btnDownload: 'ダウンロード', remove: '削除',
+            tCompressed: '{n} 枚の大きい画像を圧縮しました', tUploaded: '{n} 枚の写真をアップロードしました',
+            tUploadFail: 'アップロード失敗', tStyleFail: 'スタイルの読み込みに失敗', tProcessFail: '処理に失敗', tResultFail: '結果の読み込みに失敗',
+            eRead: 'ファイルの読み込みに失敗', eHeic: 'HEIC が大きすぎてブラウザで圧縮できません。デスクトップ版を使うか JPG に変換してください', eDecode: '画像をデコードできません',
+            featTitle: 'このツールを使う理由',
+            f1t: '本物の EXIF データ', f1d: 'カメラ機種・レンズ・絞り・シャッター速度・ISO を写真から直接読み取ります。',
+            f2t: 'インストール・登録不要', f2d: 'すべてブラウザ内で完結。数秒でアップロード・生成・ダウンロード。',
+            f3t: '美しいテンプレート', f3d: 'シンプル、クラシック、背景ぼかしなど、ブランドロゴ付きのスタイル。',
+            faqTitle: 'よくある質問',
+            q1: 'このツールは無料ですか？', a1: 'はい、完全無料で登録不要、出力に余計なウォーターマークは付きません。',
+            q2: 'ウォーターマークには何が表示されますか？', a2: 'EXIF を読み取り、カメラ機種・レンズ・絞り・シャッター・ISO・時刻・任意のブランドロゴを表示します。',
+            q3: '写真のプライバシーは守られますか？', a3: '写真はダウンロードする結果の生成にのみ使用され、一時的に処理され、共有・販売されません。',
+            q4: '対応フォーマットは？', a4: 'JPG・PNG・HEIC。大きい画像は EXIF を保持したままブラウザ内で圧縮されます。',
+            footAttrib: 'オープンソースプロジェクト semi-utils（Apache License 2.0）に基づく。', footPrivacy: 'プライバシーポリシー',
+            st_classic: 'カメラ EXIF + ブランドロゴ', st_framed: '角丸・影・余白', st_nikon: 'ニコン風ぼかし背景',
+            st_blur: 'パラメータ中央、ぼかし背景', st_minimal: '右下に小さくパラメータ', st_folder: 'フォルダ名 + 撮影時刻', st_center: '中央ロゴ、カスタム文字',
+        },
+        ko: {
+            tagline: '사진에 EXIF 워터마크 추가',
+            modeCloud: '클라우드', modeLocal: '로컬',
+            heroTitle: '무료 온라인 사진 워터마크 도구',
+            heroSub: '카메라 모델, 렌즈, 조리개, 셔터 속도, ISO, 브랜드 로고 등 EXIF 워터마크를 브라우저에서 사진에 추가하세요. 설치 불필요, 가입 불필요.',
+            s1: '사진 업로드', s1count: '{n}장 선택됨',
+            dropIdle: '클릭하여 선택하거나 여기로 끌어다 놓으세요', dropBusy: '처리 중…',
+            dropFormats: 'JPG / PNG / HEIC — 큰 이미지는 자동 압축 (EXIF 유지)',
+            s2: '워터마크 스타일 선택',
+            s3: '생성',
+            qLabel: '출력 화질', qStd: '표준', qHigh: 'HD', qMax: '최고',
+            genBtn: '워터마크 생성', genBusy: '생성 중…', processing: '처리 중…',
+            hintPhotos: '먼저 사진을 업로드하세요', hintStyle: '워터마크 스타일을 선택하세요',
+            footnote: '사진은 이번 처리에만 사용됩니다. 4MB가 넘는 이미지는 업로드 전 로컬에서 압축됩니다 (EXIF 유지).',
+            doneTitle: '완료!', doneSummary: '성공 {s}장, 건너뜀 {k}장, 실패 {f}장',
+            btnZip: '전체 다운로드 (ZIP)', btnRedo: '다시 하기', btnDownload: '다운로드', remove: '제거',
+            tCompressed: '{n}장의 큰 이미지를 압축했습니다', tUploaded: '{n}장의 사진을 업로드했습니다',
+            tUploadFail: '업로드 실패', tStyleFail: '스타일 로드 실패', tProcessFail: '처리 실패', tResultFail: '결과 로드 실패',
+            eRead: '파일 읽기 실패', eHeic: 'HEIC가 너무 커서 브라우저에서 압축할 수 없습니다. 데스크톱 앱을 사용하거나 JPG로 변환하세요', eDecode: '이미지를 디코딩할 수 없습니다',
+            featTitle: '이 도구를 사용하는 이유',
+            f1t: '실제 EXIF 데이터', f1d: '카메라 모델, 렌즈, 조리개, 셔터 속도, ISO를 사진에서 직접 읽습니다.',
+            f2t: '설치·가입 불필요', f2d: '모든 작업이 브라우저에서 이루어집니다. 몇 초 만에 업로드·생성·다운로드.',
+            f3t: '아름다운 템플릿', f3d: '심플, 클래식, 배경 흐림 등 브랜드 로고가 있는 스타일.',
+            faqTitle: '자주 묻는 질문',
+            q1: '이 워터마크 도구는 무료인가요?', a1: '네, 완전 무료이며 가입이 필요 없고 출력물에 별도 워터마크가 없습니다.',
+            q2: '워터마크에는 무엇이 표시되나요?', a2: 'EXIF를 읽어 카메라 모델, 렌즈, 조리개, 셔터, ISO, 시간, 선택적 브랜드 로고를 표시합니다.',
+            q3: '제 사진은 안전한가요?', a3: '사진은 다운로드할 결과 생성에만 사용되며 임시로 처리되고 공유·판매되지 않습니다.',
+            q4: '어떤 형식을 지원하나요?', a4: 'JPG, PNG, HEIC. 큰 이미지는 워터마크에 필요한 EXIF를 유지하며 브라우저에서 압축됩니다.',
+            footAttrib: '오픈소스 프로젝트 semi-utils (Apache License 2.0) 기반.', footPrivacy: '개인정보 처리방침',
+            st_classic: '카메라 EXIF + 브랜드 로고', st_framed: '둥근 모서리, 그림자, 여백', st_nikon: '니콘 스타일 흐림 배경',
+            st_blur: '파라미터 중앙, 흐림 배경', st_minimal: '하단 모서리 작은 파라미터', st_folder: '폴더명 + 촬영 시간', st_center: '중앙 로고, 사용자 지정 텍스트',
+        },
+        es: {
+            tagline: 'Añade marcas de agua EXIF a tus fotos',
+            modeCloud: 'Nube', modeLocal: 'Local',
+            heroTitle: 'Herramienta gratuita de marca de agua para fotos',
+            heroSub: 'Añade una marca de agua EXIF limpia —modelo de cámara, objetivo, apertura, velocidad, ISO y logo de marca— a cualquier foto, en tu navegador. Sin instalar, sin registro.',
+            s1: 'Subir fotos', s1count: '{n} seleccionada(s)',
+            dropIdle: 'Haz clic para elegir o arrastra las fotos aquí', dropBusy: 'Procesando…',
+            dropFormats: 'JPG / PNG / HEIC — las imágenes grandes se comprimen automáticamente (EXIF conservado)',
+            s2: 'Elige un estilo de marca de agua',
+            s3: 'Generar',
+            qLabel: 'Calidad de salida', qStd: 'Estándar', qHigh: 'HD', qMax: 'Máxima',
+            genBtn: 'Generar marca de agua', genBusy: 'Generando…', processing: 'Procesando…',
+            hintPhotos: 'Primero sube fotos', hintStyle: 'Elige un estilo de marca de agua',
+            footnote: 'Las fotos se usan solo para esta sesión. Las imágenes de más de 4MB se comprimen localmente antes de subirlas (EXIF conservado).',
+            doneTitle: '¡Listo!', doneSummary: 'Éxito {s}, omitidas {k}, fallidas {f}',
+            btnZip: 'Descargar todo (ZIP)', btnRedo: 'Empezar de nuevo', btnDownload: 'Descargar', remove: 'Quitar',
+            tCompressed: 'Se comprimieron {n} imagen(es) grande(s)', tUploaded: 'Se subieron {n} foto(s)',
+            tUploadFail: 'Error al subir', tStyleFail: 'Error al cargar estilos', tProcessFail: 'Error al procesar', tResultFail: 'Error al cargar resultados',
+            eRead: 'Error al leer el archivo', eHeic: 'El HEIC es demasiado grande para comprimirlo en el navegador: usa la app de escritorio o conviértelo a JPG primero', eDecode: 'No se pudo decodificar la imagen',
+            featTitle: 'Por qué usar esta herramienta',
+            f1t: 'Datos EXIF reales', f1d: 'Lee el modelo de cámara, objetivo, apertura, velocidad e ISO directamente de tu foto.',
+            f2t: 'Sin instalar ni registrarse', f2d: 'Todo funciona en tu navegador. Sube, genera y descarga en segundos.',
+            f3t: 'Plantillas bonitas', f3d: 'Elige estilos limpios, clásicos o con fondo difuminado y logos de marca.',
+            faqTitle: 'Preguntas frecuentes',
+            q1: '¿Esta herramienta es gratis?', a1: 'Sí, es totalmente gratis, sin registro y sin marca de agua extra en el resultado.',
+            q2: '¿Qué muestra la marca de agua?', a2: 'Lee tus datos EXIF y muestra modelo, objetivo, apertura, velocidad, ISO, hora y un logo de marca opcional.',
+            q3: '¿Mis fotos son privadas?', a3: 'Las fotos solo se usan para crear el resultado que descargas; se procesan temporalmente y nunca se comparten ni venden.',
+            q4: '¿Qué formatos admite?', a4: 'JPG, PNG y HEIC. Las imágenes grandes se comprimen en tu navegador conservando el EXIF necesario.',
+            footAttrib: 'Basado en el proyecto de código abierto semi-utils (Apache License 2.0).', footPrivacy: 'Política de privacidad',
+            st_classic: 'EXIF de cámara + logo de marca', st_framed: 'Esquinas redondeadas, sombra y margen', st_nikon: 'Fondo difuminado estilo Nikon',
+            st_blur: 'Parámetros centrados, fondo difuminado', st_minimal: 'Parámetros pequeños en la esquina', st_folder: 'Nombre de carpeta + hora', st_center: 'Logo centrado, texto personalizado',
+        },
+    };
+
+    function detectLang() {
+        const saved = localStorage.getItem('lang');
+        if (saved && I18N[saved]) return saved;
+        const n = (navigator.language || 'en').toLowerCase();
+        if (n.startsWith('zh')) return 'zh';
+        if (n.startsWith('ja')) return 'ja';
+        if (n.startsWith('ko')) return 'ko';
+        if (n.startsWith('es')) return 'es';
+        return 'en';
+    }
+
+    // ===== Client-side compression (preserves EXIF) =====
     const MAX_UPLOAD = 4 * 1024 * 1024;
+    function fileToDataURL(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(file);});}
+    function loadImage(src){return new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=src;});}
+    function dataURLtoBlob(d){const[h,b]=d.split(',');const m=h.match(/:(.*?);/)[1];const bin=atob(b);const a=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)a[i]=bin.charCodeAt(i);return new Blob([a],{type:m});}
 
-    function fileToDataURL(file) {
-        return new Promise((resolve, reject) => {
-            const r = new FileReader();
-            r.onload = () => resolve(r.result);
-            r.onerror = reject;
-            r.readAsDataURL(file);
-        });
-    }
-
-    function loadImage(src) {
-        return new Promise((resolve, reject) => {
-            const img = new Image();
-            img.onload = () => resolve(img);
-            img.onerror = reject;
-            img.src = src;
-        });
-    }
-
-    function dataURLtoBlob(dataUrl) {
-        const [head, b64] = dataUrl.split(',');
-        const mime = head.match(/:(.*?);/)[1];
-        const bin = atob(b64);
-        const arr = new Uint8Array(bin.length);
-        for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
-        return new Blob([arr], { type: mime });
-    }
-
-    async function prepareForUpload(file) {
-        // 已经够小，原样上传（完整保留画质与 EXIF）
+    async function prepareForUpload(file, t) {
         if (file.size <= MAX_UPLOAD) return file;
-
         const isJpeg = /jpe?g/i.test(file.type) || /\.jpe?g$/i.test(file.name);
         const isHeic = /hei[cf]/i.test(file.type) || /\.hei[cf]$/i.test(file.name);
-
-        // 读取原图 EXIF（仅 JPEG 可读）
-        let exifStr = '';
-        let srcDataUrl;
+        let exifStr = '', srcDataUrl;
         try {
             srcDataUrl = await fileToDataURL(file);
-            if (isJpeg && window.piexif) {
-                try { exifStr = piexif.dump(piexif.load(srcDataUrl)); } catch (e) { exifStr = ''; }
-            }
-        } catch (e) {
-            throw new Error('读取文件失败');
-        }
-
-        // 浏览器通常无法把 HEIC 画到 canvas；过大的 HEIC 只能提示
+            if (isJpeg && window.piexif) { try { exifStr = piexif.dump(piexif.load(srcDataUrl)); } catch (e) { exifStr = ''; } }
+        } catch (e) { throw new Error(t('eRead')); }
         let img;
-        try {
-            img = await loadImage(srcDataUrl);
-        } catch (e) {
-            if (isHeic) throw new Error('HEIC 照片过大且无法在浏览器压缩，请改用本地版或先转成 JPG');
-            throw new Error('无法解码图片');
-        }
-
+        try { img = await loadImage(srcDataUrl); }
+        catch (e) { throw new Error(isHeic ? t('eHeic') : t('eDecode')); }
         const maxEdge = 4096;
         let baseScale = Math.max(img.width, img.height) > maxEdge ? maxEdge / Math.max(img.width, img.height) : 1;
         const qualities = [0.85, 0.78, 0.7, 0.6];
         let best = null;
-
         for (let pass = 0; pass < 4; pass++) {
             const scale = baseScale * Math.pow(0.75, pass);
-            const cw = Math.max(1, Math.round(img.width * scale));
-            const ch = Math.max(1, Math.round(img.height * scale));
+            const cw = Math.max(1, Math.round(img.width * scale)), ch = Math.max(1, Math.round(img.height * scale));
             const canvas = document.createElement('canvas');
             canvas.width = cw; canvas.height = ch;
             canvas.getContext('2d').drawImage(img, 0, 0, cw, ch);
@@ -323,55 +553,64 @@
                 if (exifStr) { try { dataUrl = piexif.insert(exifStr, dataUrl); } catch (e) {} }
                 const blob = dataURLtoBlob(dataUrl);
                 if (!best || blob.size < best.size) best = blob;
-                if (blob.size <= MAX_UPLOAD) {
-                    const name = file.name.replace(/\.(png|heic|heif)$/i, '.jpg');
-                    return new File([blob], name, { type: 'image/jpeg' });
-                }
+                if (blob.size <= MAX_UPLOAD) return new File([blob], file.name.replace(/\.(png|heic|heif)$/i, '.jpg'), { type: 'image/jpeg' });
             }
         }
-        // 实在压不下去也用最小的那张
-        const name = file.name.replace(/\.(png|heic|heif)$/i, '.jpg');
-        return new File([best], name, { type: 'image/jpeg' });
+        return new File([best], file.name.replace(/\.(png|heic|heif)$/i, '.jpg'), { type: 'image/jpeg' });
     }
 
     function app() {
         return {
+            lang: 'en',
             cloudMode: false,
-            view: 'edit',            // 'edit' | 'done'
+            view: 'edit',
             uploading: false,
             isDragging: false,
             sessionId: null,
-            photos: [],              // [{label, value}]
+            photos: [],
             templates: [],
             selectedTemplate: '',
             quality: 92,
             qualityOptions: [
-                { label: '标准', value: 80 },
-                { label: '高清', value: 92 },
-                { label: '最高', value: 100 },
+                { key: 'qStd', value: 80 },
+                { key: 'qHigh', value: 92 },
+                { key: 'qMax', value: 100 },
             ],
             results: [],
             progress: { active: false, total: 0, success: 0, failure: 0, skipped: 0, percent: 0, message: '' },
 
-            get canStart() {
-                return this.photos.length > 0 && this.selectedTemplate && !this.progress.active;
+            t(key, vars) {
+                const dict = I18N[this.lang] || I18N.en;
+                let s = dict[key];
+                if (s === undefined) s = (I18N.en[key] !== undefined ? I18N.en[key] : key);
+                if (vars) for (const k in vars) s = s.replace('{' + k + '}', vars[k]);
+                return s;
             },
+
+            setLang(l) {
+                this.lang = l;
+                localStorage.setItem('lang', l);
+                document.documentElement.lang = l;
+            },
+
+            get canStart() { return this.photos.length > 0 && this.selectedTemplate && !this.progress.active; },
 
             styleMeta(name) {
-                return STYLE_META[name] || { img: '', name: name, desc: '自定义模板' };
+                const m = STYLE_META[name];
+                if (!m) return { img: '', name: name, desc: '' };
+                return { img: m.img, name: m.name, desc: this.t(m.descKey) };
             },
 
-            thumbUrl(path) {
-                return `/api/v1/file?path=${encodeURIComponent(path)}`;
-            },
+            thumbUrl(path) { return `/api/v1/file?path=${encodeURIComponent(path)}`; },
 
             async init() {
+                this.lang = detectLang();
+                document.documentElement.lang = this.lang;
+
                 this.toast = (msg, type = 'info') => Toastify({
                     text: msg, duration: 3000, gravity: 'top', position: 'center',
-                    style: {
-                        background: type === 'error' ? '#ef4444' : (type === 'success' ? '#10b981' : '#0ea5e9'),
-                        borderRadius: '12px', fontSize: '14px', fontWeight: '500', padding: '12px 24px',
-                    }
+                    style: { background: type === 'error' ? '#ef4444' : (type === 'success' ? '#10b981' : '#0ea5e9'),
+                        borderRadius: '12px', fontSize: '14px', fontWeight: '500', padding: '12px 24px' }
                 }).showToast();
 
                 await this.detectMode();
@@ -379,74 +618,57 @@
             },
 
             async detectMode() {
-                try {
-                    const res = await fetch('/api/v1/mode');
-                    this.cloudMode = !!(await res.json()).cloud;
-                } catch (e) { this.cloudMode = false; }
+                try { const r = await fetch('/api/v1/mode'); this.cloudMode = !!(await r.json()).cloud; }
+                catch (e) { this.cloudMode = false; }
             },
 
             async loadTemplates() {
                 try {
-                    const res = await fetch('/api/v1/config');
-                    const data = await res.json();
-                    this.templates = data.templates || [];
-                    // 默认选中：优先“标准水印”，否则第一个
-                    this.selectedTemplate = this.templates.includes(data.template_name) ? data.template_name
+                    const r = await fetch('/api/v1/config');
+                    const d = await r.json();
+                    this.templates = d.templates || [];
+                    this.selectedTemplate = this.templates.includes(d.template_name) ? d.template_name
                         : (this.templates.includes('标准水印') ? '标准水印' : (this.templates[0] || ''));
-                } catch (e) {
-                    this.toast('加载样式失败: ' + e.message, 'error');
-                }
+                } catch (e) { this.toast(this.t('tStyleFail'), 'error'); }
             },
 
             async uploadFiles(fileList) {
                 if (!fileList || !fileList.length) return;
                 this.uploading = true;
                 try {
-                    // 大图先在浏览器内压缩（保留 EXIF），避免超过 Vercel 4.5MB 上限
-                    const prepared = [];
-                    let compressed = 0;
+                    const prepared = []; let compressed = 0;
                     for (const f of Array.from(fileList)) {
-                        try {
-                            const out = await prepareForUpload(f);
-                            if (out !== f) compressed++;
-                            prepared.push(out);
-                        } catch (e) {
-                            this.toast(`${f.name}: ${e.message}`, 'error');
-                        }
+                        try { const out = await prepareForUpload(f, this.t.bind(this)); if (out !== f) compressed++; prepared.push(out); }
+                        catch (e) { this.toast(`${f.name}: ${e.message}`, 'error'); }
                     }
                     if (!prepared.length) return;
-                    if (compressed) this.toast(`已自动压缩 ${compressed} 张大图`, 'info');
+                    if (compressed) this.toast(this.t('tCompressed', {n: compressed}), 'info');
 
                     const formData = new FormData();
                     if (this.sessionId) formData.append('session_id', this.sessionId);
                     for (const f of prepared) formData.append('files', f);
 
                     const res = await fetch('/api/v1/upload', { method: 'POST', body: formData });
-                    if (!res.ok) throw new Error(`上传失败 ${res.status}`);
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
                     const data = await res.json();
                     this.sessionId = data.session_id;
 
                     const existing = new Set(this.photos.map(p => p.value));
                     const added = (data.files || []).filter(f => !existing.has(f.value));
                     this.photos = [...this.photos, ...added];
-                    this.toast(`已上传 ${added.length} 张照片`, 'success');
+                    this.toast(this.t('tUploaded', {n: added.length}), 'success');
                 } catch (e) {
-                    this.toast('上传失败: ' + e.message, 'error');
-                } finally {
-                    this.uploading = false;
-                }
+                    this.toast(this.t('tUploadFail') + ': ' + e.message, 'error');
+                } finally { this.uploading = false; }
             },
 
-            removePhoto(idx) {
-                this.photos.splice(idx, 1);
-            },
+            removePhoto(idx) { this.photos.splice(idx, 1); },
 
             async generate() {
-                this.progress = { active: true, total: this.photos.length, success: 0, failure: 0, skipped: 0, percent: 0, message: '准备处理…' };
+                this.progress = { active: true, total: this.photos.length, success: 0, failure: 0, skipped: 0, percent: 0, message: this.t('processing') };
                 try {
                     const response = await fetch('/api/v1/start_process', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             selectedItems: this.photos.map(p => p.value),
                             session_id: this.sessionId || undefined,
@@ -454,12 +676,11 @@
                             template_name: this.selectedTemplate || undefined,
                         })
                     });
-                    if (!response.ok) throw new Error('服务端错误');
+                    if (!response.ok) throw new Error('HTTP ' + response.status);
 
                     const reader = response.body.getReader();
                     const decoder = new TextDecoder();
                     let buffer = '', currentEvent = '';
-
                     while (true) {
                         const { done, value } = await reader.read();
                         if (done) break;
@@ -467,9 +688,8 @@
                         const lines = buffer.split('\n');
                         buffer = lines.pop() || '';
                         for (const line of lines) {
-                            if (line.startsWith('event:')) {
-                                currentEvent = line.slice(6).trim();
-                            } else if (line.startsWith('data:')) {
+                            if (line.startsWith('event:')) currentEvent = line.slice(6).trim();
+                            else if (line.startsWith('data:')) {
                                 try {
                                     const d = JSON.parse(line.slice(5).trim());
                                     if (d.total !== undefined) this.progress.total = d.total;
@@ -477,42 +697,31 @@
                                     if (d.failure !== undefined) this.progress.failure = d.failure;
                                     if (d.skipped !== undefined) this.progress.skipped = d.skipped;
                                     if (d.percent !== undefined) this.progress.percent = d.percent;
-                                    if (d.message !== undefined) this.progress.message = d.message;
                                     if (currentEvent === 'complete' && d.session_id) this.sessionId = d.session_id;
                                 } catch (e) {}
                                 currentEvent = '';
                             }
                         }
                     }
-
                     await new Promise(r => setTimeout(r, 400));
                     await this.loadResults();
                 } catch (e) {
-                    this.toast('处理失败: ' + e.message, 'error');
-                } finally {
-                    this.progress.active = false;
-                }
+                    this.toast(this.t('tProcessFail') + ': ' + e.message, 'error');
+                } finally { this.progress.active = false; }
             },
 
             async loadResults() {
                 try {
-                    const url = this.sessionId
-                        ? `/api/v1/file/tree?session_id=${encodeURIComponent(this.sessionId)}`
-                        : '/api/v1/file/tree';
+                    const url = this.sessionId ? `/api/v1/file/tree?session_id=${encodeURIComponent(this.sessionId)}` : '/api/v1/file/tree';
                     const res = await fetch(url, { cache: 'no-store' });
                     const data = await res.json();
                     const flat = [];
-                    const walk = (nodes) => (nodes || []).forEach(n => {
-                        if (n.is_file) flat.push({ label: n.label, value: n.value });
-                        if (n.children) walk(n.children);
-                    });
+                    const walk = (nodes) => (nodes || []).forEach(n => { if (n.is_file) flat.push({ label: n.label, value: n.value }); if (n.children) walk(n.children); });
                     walk(data.output_files);
                     this.results = flat;
                     this.view = 'done';
                     window.scrollTo({ top: 0, behavior: 'smooth' });
-                } catch (e) {
-                    this.toast('读取结果失败: ' + e.message, 'error');
-                }
+                } catch (e) { this.toast(this.t('tResultFail'), 'error'); }
             },
 
             downloadOne(path) {
@@ -522,26 +731,15 @@
                 document.body.appendChild(a); a.click(); document.body.removeChild(a);
             },
 
-            downloadZip() {
-                if (!this.sessionId) return;
-                window.location.href = `/api/v1/download_zip?session_id=${encodeURIComponent(this.sessionId)}`;
-            },
+            downloadZip() { if (this.sessionId) window.location.href = `/api/v1/download_zip?session_id=${encodeURIComponent(this.sessionId)}`; },
 
             reset() {
-                this.view = 'edit';
-                this.photos = [];
-                this.results = [];
-                this.sessionId = null;
+                this.view = 'edit'; this.photos = []; this.results = []; this.sessionId = null;
                 this.progress = { active: false, total: 0, success: 0, failure: 0, skipped: 0, percent: 0, message: '' };
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             },
         }
     }
-
-    // 简单淡入动画
-    const style = document.createElement('style');
-    style.textContent = '@keyframes fadeIn{from{opacity:0}to{opacity:1}}';
-    document.head.appendChild(style);
 </script>
 </body>
 </html>

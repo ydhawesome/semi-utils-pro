@@ -1,0 +1,40 @@
+Semi-Utils Pro
+Copyright 2026
+
+This product is based on "semi-utils" (https://github.com/leslievan/semi-utils),
+Copyright (c) LeslieVan, licensed under the Apache License, Version 2.0.
+A copy of the Apache License 2.0 is provided in the LICENSE file.
+
+Modifications by the Semi-Utils Pro authors include a redesigned web UI,
+cloud/serverless deployment support, internationalization, and SEO.
+
+------------------------------------------------------------------------
+Third-party components and their licenses
+------------------------------------------------------------------------
+Python libraries:
+  - Flask                 BSD-3-Clause
+  - Jinja2                BSD-3-Clause
+  - Pillow                HPND (PIL license)
+  - pillow-heif / libheif LGPL-3.0 / BSD (libde265, libheif)
+  - NumPy                 BSD-3-Clause
+  - Loguru                MIT
+  - Werkzeug              BSD-3-Clause
+
+Front-end libraries (loaded via CDN):
+  - Alpine.js             MIT
+  - Tailwind CSS          MIT
+  - Toastify-js           MIT
+  - piexifjs              MIT
+
+Fonts (bundled in config/fonts):
+  - Roboto                Apache License 2.0
+  - Alibaba PuHuiTi 2.0   Free for commercial use (Alibaba)
+
+Optional external tool (NOT bundled in the web build):
+  - ExifTool              GPL v1+ / Artistic License 2.0
+    Used only by the optional local desktop build; the web/cloud build
+    reads EXIF via Pillow and does not distribute ExifTool.
+
+Camera brand names and logos referenced by watermark templates are
+trademarks of their respective owners and are used only to identify the
+camera that captured a given photo.

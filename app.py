@@ -44,6 +44,38 @@ def index():
     return render_template('index.html', title='Semi-Utils Pro', version=project_info['project']['version'])
 
 
+@api.route('/privacy')
+def privacy():
+    return render_template('privacy.html')
+
+
+def _seo_base_url():
+    """对外可访问的站点根地址（用于 sitemap / robots，强制 https）"""
+    base = request.host_url.rstrip('/')
+    if 'localhost' not in base and '127.0.0.1' not in base:
+        base = base.replace('http://', 'https://')
+    return base
+
+
+@api.route('/robots.txt')
+def robots_txt():
+    body = "User-agent: *\nAllow: /\nSitemap: {}/sitemap.xml\n".format(_seo_base_url())
+    return Response(body, mimetype='text/plain')
+
+
+@api.route('/sitemap.xml')
+def sitemap_xml():
+    base = _seo_base_url()
+    body = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        f'  <url><loc>{base}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>\n'
+        f'  <url><loc>{base}/privacy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>\n'
+        '</urlset>\n'
+    )
+    return Response(body, mimetype='application/xml')
+
+
 @api.route('/api/v1/config', methods=['GET'])
 def get_config():
     template_name = config.get('render', 'template_name')
