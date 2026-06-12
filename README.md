@@ -4,8 +4,8 @@
 >
 > **一个用于给照片批量添加水印、处理像素比、图像色彩和质量的工具。**
 
-[![license](https://img.shields.io/github/license/ydhawesome/semi-utils)](LICENSE)
-![language](https://img.shields.io/github/languages/top/ydhawesome/semi-utils?color=orange)
+[![license](https://img.shields.io/github/license/ydhawesome/semi-utils-pro)](LICENSE)
+![language](https://img.shields.io/github/languages/top/ydhawesome/semi-utils-pro?color=orange)
 [![Vercel](https://img.shields.io/badge/Vercel-deployed-brightgreen)](https://semi-utils-main.vercel.app)
 
 ## 在线使用
@@ -14,7 +14,7 @@
 
 **[https://semi-utils-main.vercel.app](https://semi-utils-main.vercel.app)**
 
-或通过 GitHub Pages 入口：**[https://ydhawesome.github.io/semi-utils/](https://ydhawesome.github.io/semi-utils/)**
+或通过 GitHub Pages 入口：**[https://ydhawesome.github.io/semi-utils-pro/](https://ydhawesome.github.io/semi-utils-pro/)**
 
 ## 本地运行
 
@@ -46,7 +46,7 @@ python app.py
 
 ## 部署到自己的 Vercel
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ydhawesome/semi-utils)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ydhawesome/semi-utils-pro)
 
 或手动部署：
 
