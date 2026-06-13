@@ -41,7 +41,7 @@ api = Flask(__name__)
 
 @api.route('/')
 def index():
-    return render_template('index.html', title='Semi-Utils Pro', version=project_info['project']['version'])
+    return render_template('index.html', title='Framely', version=project_info['project']['version'])
 
 
 @api.route('/privacy')
@@ -195,7 +195,7 @@ def download_zip_api():
                 zf.write(str(p), str(p.relative_to(output_dir)))
     mem.seek(0)
     return send_file(mem, mimetype='application/zip', as_attachment=True,
-                     download_name='semi-utils-result.zip')
+                     download_name='framely-result.zip')
 
 
 @api.route('/api/v1/file/tree', methods=['GET'])
@@ -533,7 +533,7 @@ def list_templates_api():
 
 
 def start_server():
-    logger.info('✅ Semi-Utils Pro 启动成功')
+    logger.info('✅ Framely 启动成功')
     logger.info(f'服务地址: http://{config.get("DEFAULT", "host")}:{config.getint("DEFAULT", "port")}')
     api.run(
         port=config.getint('DEFAULT', 'port'),

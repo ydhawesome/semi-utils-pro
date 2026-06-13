@@ -1,8 +1,8 @@
-# Semi-Utils Pro
+# Framely
 
-> 基于 [semi-utils](https://github.com/leslievan/semi-utils) 二次开发，增加了 Vercel 云端部署支持。
+> 基于 [semi-utils](https://github.com/leslievan/semi-utils) 二次开发，增加了多语言、SEO 与 Vercel 云端部署支持。
 >
-> **一个用于给照片批量添加水印、处理像素比、图像色彩和质量的工具。**
+> **批量给照片添加 EXIF 水印与边框 —— 免注册、免费、浏览器内完成。**
 
 [![license](https://img.shields.io/github/license/ydhawesome/semi-utils-pro)](LICENSE)
 ![language](https://img.shields.io/github/languages/top/ydhawesome/semi-utils-pro?color=orange)

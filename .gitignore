@@ -21,3 +21,6 @@ config/config.ini.bak
 .claude/
 debug.log
 111.py
+
+# Standalone build artifact (local only)
+semi-utils.exe
