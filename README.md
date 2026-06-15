@@ -1,4 +1,4 @@
-# Framely
+# ShotStamp
 
 > 基于 [semi-utils](https://github.com/leslievan/semi-utils) 二次开发，增加了多语言、SEO 与 Vercel 云端部署支持。
 >

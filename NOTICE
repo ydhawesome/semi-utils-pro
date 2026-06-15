@@ -1,11 +1,11 @@
-Framely
+ShotStamp
 Copyright 2026
 
 This product is based on "semi-utils" (https://github.com/leslievan/semi-utils),
 Copyright (c) LeslieVan, licensed under the Apache License, Version 2.0.
 A copy of the Apache License 2.0 is provided in the LICENSE file.
 
-Modifications by the Framely authors include a redesigned web UI,
+Modifications by the ShotStamp authors include a redesigned web UI,
 cloud/serverless deployment support, internationalization, and SEO.
 
 ------------------------------------------------------------------------
